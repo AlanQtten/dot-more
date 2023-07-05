@@ -3,6 +3,8 @@
   "displayName": "dot-more",
   "description": "vscode plugin,easy to generate code",
   "version": "0.0.1",
+  "publisher": "AlanQtten",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.79.0"
   },
