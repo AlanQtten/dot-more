@@ -53,12 +53,16 @@ export function activate(context: vscode.ExtensionContext) {
       description: "quick console.log result",
     },
     {
-      trigger: 'log_wm',
+      trigger: 'logM',
       description: "quick console.log result with pre message",
     },
     {
       trigger: 'if',
       description: "quick if statement",
+    },
+    {
+      trigger: 'for',
+      description: 'quick for statement'
     }
   ];
   const options = vscode.languages.registerCompletionItemProvider(
@@ -79,14 +83,14 @@ export function activate(context: vscode.ExtensionContext) {
     position: vscode.Position,
     config
   ) => {
-    const triggerHandler = getHandler(config.trigger);
-    const lineText = editor.document.lineAt(position.line).text;
-    const dotMoreText = lineText.split(' ');
+    try {
+      const triggerHandler = getHandler(config.trigger);
+      const lineText = editor.document.lineAt(position.line).text;
+      const dotMoreText = lineText.split(' ');
 
-    let current = 0;
-    dotMoreText.forEach((text, index, list) => {
-      if(index === list.length - 1) {
-        try {
+      let current = 0;
+      dotMoreText.forEach((text, index, list) => {
+        if(index === list.length - 1) {
           const [replaceText, callback = () => {}] = triggerHandler(text, current);
 
           if(replaceText) {
@@ -97,18 +101,18 @@ export function activate(context: vscode.ExtensionContext) {
               ),
               replaceText
             );
-  
-            callback();
+
+            callback(editor, position);
           }
-        } catch (error) {
-          console.log(error);
           
+        }else {
+          current += text.length + 1;
         }
-        
-      }else {
-        current += text.length + 1;
-      }
-    });
+      });
+    } catch (error) {
+      console.log(error);
+      
+    }
 
     return Promise.resolve([]);
   };
