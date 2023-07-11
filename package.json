@@ -2,11 +2,11 @@
   "name": "dot-more",
   "displayName": "dot-more",
   "description": "vscode plugin,easy to generate code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "AlanQtten",
   "icon": "icon.png",
   "engines": {
-    "vscode": "^1.6.0"
+    "vscode": "^1.7.0"
   },
   "categories": [
     "Other"
@@ -24,7 +24,18 @@
     "onLanguage:vue"
   ],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "title": "dotMore",
+      "properties": {
+        "dotMore.disableReactExtends": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否禁用react相关的行内扩展"
+        }
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -34,7 +45,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.79.0",
+    "@types/vscode": "^1.7.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "20.2.5",

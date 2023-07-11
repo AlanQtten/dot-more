@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
 
-import { getHandler } from './utils/index';
+import logHandler from './funcs/logHandler';
+import ifHandler from './funcs/ifHandler';
+import useStateHandler from './funcs/useStateHandler';
+import useMemoHandler from './funcs/useMemoHandler';
+import { Trigger, getConfigList } from './config';
 
 const command = 'replace';
 
@@ -8,8 +12,8 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
   config: any[];
 
-  constructor(config) {
-    this.config = config;
+  constructor() {
+    this.config = getConfigList();
   }
 
   public provideCompletionItems(
@@ -19,7 +23,7 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
     this.position = position;
     const completions = this.config.map((item) => {
       const snippetCompletion = new vscode.CompletionItem(
-        item.trigger,
+        item.label,
         vscode.CompletionItemKind.Operator
       );
       snippetCompletion.documentation = new vscode.MarkdownString(
@@ -34,7 +38,7 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
   public resolveCompletionItem(item: vscode.CompletionItem) {
     const label = item.label;
     if (this.position && this.config && typeof label === 'string') {
-      const config = this.config.find((config) => config.trigger === label);
+      const config = this.config.find((config) => config.label === label);
       item.command = {
         command,
         title: 'refactor',
@@ -44,27 +48,15 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
 
     return item;
   }
+
+  private updateConfig() {
+    this.config = getConfigList();
+  }
 }
 
+
 export function activate(context: vscode.ExtensionContext) {
-  const configList = [
-    {
-      trigger: 'log',
-      description: "quick console.log result",
-    },
-    {
-      trigger: 'logM',
-      description: "quick console.log result with pre message",
-    },
-    {
-      trigger: 'if',
-      description: "quick if statement",
-    },
-    {
-      trigger: 'for',
-      description: 'quick for statement'
-    }
-  ];
+  let completionItemProvider;
   const options = vscode.languages.registerCompletionItemProvider(
     [
       'html',
@@ -74,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
       'typescriptreact',
       'vue',
     ],
-    new CompletionItemProvider(configList),
+    completionItemProvider = new CompletionItemProvider(),
     '.'
   );
   const commandHandler = (
@@ -83,35 +75,22 @@ export function activate(context: vscode.ExtensionContext) {
     position: vscode.Position,
     config
   ) => {
-    try {
-      const triggerHandler = getHandler(config.trigger);
-      const lineText = editor.document.lineAt(position.line).text;
-      const dotMoreText = lineText.split(' ');
-
-      let current = 0;
-      dotMoreText.forEach((text, index, list) => {
-        if(index === list.length - 1) {
-          const [replaceText, callback = () => {}] = triggerHandler(text, current);
-
-          if(replaceText) {
-            edit.replace(
-              new vscode.Range(
-                position.with(position.line, current),
-                position.with(position.line, current + text.length)
-              ),
-              replaceText
-            );
-
-            callback(editor, position);
-          }
-          
-        }else {
-          current += text.length + 1;
-        }
-      });
-    } catch (error) {
-      console.log(error);
-      
+    switch(config.label as Trigger) {
+      case Trigger.log: 
+        logHandler(editor, edit, position);
+        break;
+      case Trigger.logM:
+        logHandler(editor, edit, position, { withMessage: true });
+        break;
+      case Trigger.if:
+        ifHandler(editor, edit, position);
+        break;
+      case Trigger.useState:
+        useStateHandler(editor, edit, position);
+        break;
+      case Trigger.useMemo:
+        useMemoHandler(editor, edit, position);
+        break;
     }
 
     return Promise.resolve([]);
@@ -121,6 +100,14 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerTextEditorCommand(command, commandHandler)
   );
   context.subscriptions.push(options);
+
+  vscode.workspace.onDidChangeConfiguration(
+    () => {
+      completionItemProvider.updateConfig();      
+    },
+    null,
+    context.subscriptions
+  );
 }
 
 export function deactivate() {}
