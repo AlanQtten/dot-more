@@ -1,2 +1,4 @@
 - [ ] test for .useState
 - [ ] test for .useMemo
+- [ ] test for .typeof
+- [ ] 优化测试脚本的执行

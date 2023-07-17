@@ -2,7 +2,9 @@
 import * as assert from 'assert';
 
 import ifHandler from '../../funcs/ifHandler';
-import dotIfTestData from './dotIfTestData';
+import dotIfTestData from './cases/dotIfTestData';
+
+// const dotIfTestData = [];
 
 const tester = (testData) => () => {
   const ifHandlerTester = (text) => {

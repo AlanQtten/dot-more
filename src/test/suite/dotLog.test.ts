@@ -2,8 +2,10 @@
 import * as assert from 'assert';
 
 import logHandler from '../../funcs/logHandler';
-import dotLogTestData from './dotLogTestData';
-import dotLogMTestData from './dotLogMTestData';
+import dotLogTestData from './cases/dotLogTestData';
+import dotLogMTestData from './cases/dotLogMTestData';
+
+// const dotLogMTestData = [];
 
 const tester = (testData, options) => () => {
   const logHandlerTester = (text) => {
