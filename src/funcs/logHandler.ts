@@ -1,39 +1,43 @@
 import * as vscode from 'vscode';
 
-import type { Handler } from "./types";
+import type { Handler } from './types';
 import { matchFromContent } from './utils';
 
-const logHandler: Handler = (
+export type LogHandlerOptions = {
+  withMessage: boolean;
+};
+
+const logHandler: Handler<LogHandlerOptions> = (
   editor,
-  edit, 
+  edit,
   position,
-  {
-    withMessage
-  } = {
-    withMessage: false
-  }
+  { withMessage = false } = { withMessage: false }
 ) => {
   const content = editor.document.lineAt(position).text;
 
-  const {
-    sliceContent,
-    sliceStart,
-    isString
-  } = matchFromContent(content, withMessage ? '.logM' : '.log');
+  const { sliceContent, sliceStart, isString } =
+    matchFromContent(content, withMessage ? '.logM' : '.log') ?? {};
+
+  if (sliceStart === undefined || sliceContent === undefined) {
+    return;
+  }
 
   let replaceText = '';
 
   const _withMessage = withMessage && !isString;
-  if(_withMessage) {
-    replaceText = `console.log(\`${sliceContent.replaceAll('`', '\\`')}\`, ${sliceContent})`;
-  }else {
+  if (_withMessage) {
+    replaceText = `console.log(\`${sliceContent.replaceAll(
+      '`',
+      '\\`'
+    )}\`, ${sliceContent})`;
+  } else {
     replaceText = `console.log(${sliceContent})`;
   }
 
   edit.replace(
     new vscode.Range(
       new vscode.Position(position.line, sliceStart),
-      new vscode.Position(position.line, content.length),
+      new vscode.Position(position.line, content.length)
     ),
     replaceText
   );

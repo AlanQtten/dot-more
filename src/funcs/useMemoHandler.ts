@@ -1,22 +1,19 @@
 import * as vscode from 'vscode';
 
-import type { Handler } from "./types";
-import { matchFromContent } from "./utils";
+import type { Handler } from './types';
+import { matchFromContent } from './utils';
 
-const useMemoHandler: Handler = (
-  editor,
-  edit,
-  position
-) => {
+const useMemoHandler: Handler = (editor, edit, position) => {
   const content = editor.document.lineAt(position).text;
 
-  const {
-    sliceContent,
-    sliceStart,
-    isString,
-  } = matchFromContent(content, '.useMemo');
+  const { sliceContent, sliceStart } =
+    matchFromContent(content, '.useMemo') ?? {};
 
-  if(!/^[a-zA-Z]+$/.test(sliceContent)) {
+  if (sliceStart === undefined || sliceContent === undefined) {
+    return;
+  }
+
+  if (!/^[a-zA-Z]+$/.test(sliceContent)) {
     return;
   }
 
@@ -26,7 +23,7 @@ const useMemoHandler: Handler = (
   edit.replace(
     new vscode.Range(
       new vscode.Position(position.line, sliceStart),
-      new vscode.Position(position.line, content.length),
+      new vscode.Position(position.line, content.length)
     ),
     replaceText
   );

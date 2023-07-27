@@ -6,12 +6,14 @@ import typeofHandler from './funcs/typeofHandler';
 import useStateHandler from './funcs/useStateHandler';
 import useMemoHandler from './funcs/useMemoHandler';
 import { Trigger, getConfigList } from './config';
+import type { Config } from './config';
 
 const command = 'replace';
 
 class CompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
-  config: any[];
+
+  config: Config[];
 
   constructor() {
     this.config = getConfigList();
@@ -27,7 +29,6 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
         item.label,
         vscode.CompletionItemKind.Operator
       );
-      snippetCompletion.sortText = item.sortText;
       snippetCompletion.documentation = new vscode.MarkdownString(
         item.description
       );
@@ -38,9 +39,9 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
   }
 
   public resolveCompletionItem(item: vscode.CompletionItem) {
-    const label = item.label;
+    const { label } = item;
     if (this.position && this.config && typeof label === 'string') {
-      const config = this.config.find((config) => config.label === label);
+      const config = this.config.find((c) => c.label === label);
       item.command = {
         command,
         title: 'refactor',
@@ -51,14 +52,13 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
     return item;
   }
 
-  private updateConfig() {
+  public updateConfig() {
     this.config = getConfigList();
   }
 }
 
-
 export function activate(context: vscode.ExtensionContext) {
-  let completionItemProvider;
+  let completionItemProvider: CompletionItemProvider;
   const options = vscode.languages.registerCompletionItemProvider(
     [
       'html',
@@ -68,17 +68,17 @@ export function activate(context: vscode.ExtensionContext) {
       'typescriptreact',
       'vue',
     ],
-    completionItemProvider = new CompletionItemProvider(),
+    (completionItemProvider = new CompletionItemProvider()),
     '.'
   );
   const commandHandler = (
     editor: vscode.TextEditor,
     edit: vscode.TextEditorEdit,
     position: vscode.Position,
-    config
+    config: Config
   ) => {
-    switch(config.label as Trigger) {
-      case Trigger.log: 
+    switch (config.label) {
+      case Trigger.log:
         logHandler(editor, edit, position);
         break;
       case Trigger.logM:
@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidChangeConfiguration(
     () => {
-      completionItemProvider.updateConfig();      
+      completionItemProvider.updateConfig();
     },
     null,
     context.subscriptions
