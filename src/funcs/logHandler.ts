@@ -13,12 +13,14 @@ const logHandler: Handler<LogHandlerOptions> = (
   position,
   { withMessage = false } = { withMessage: false }
 ) => {
-  const content = editor.document.lineAt(position).text;
+  const { sliceStart, sliceEnd, sliceContent, isString } =
+    matchFromContent(
+      editor.document,
+      position,
+      withMessage ? '.logM' : '.log'
+    ) ?? {};
 
-  const { sliceContent, sliceStart, isString } =
-    matchFromContent(content, withMessage ? '.logM' : '.log') ?? {};
-
-  if (sliceStart === undefined || sliceContent === undefined) {
+  if (!sliceStart || !sliceEnd || !sliceContent) {
     return;
   }
 
@@ -34,13 +36,7 @@ const logHandler: Handler<LogHandlerOptions> = (
     replaceText = `console.log(${sliceContent})`;
   }
 
-  edit.replace(
-    new vscode.Range(
-      new vscode.Position(position.line, sliceStart),
-      new vscode.Position(position.line, content.length)
-    ),
-    replaceText
-  );
+  edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
 };
 
 export default logHandler;

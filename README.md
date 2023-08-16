@@ -20,6 +20,25 @@ arr.filter(item => Boolean(item)).log
 typeof a + b / c + d && e === 'function'.log
 // console.log(typeof a + b / c + d && e === 'function')
 
+{
+  a: [1,2,3],
+  b: /\[some reg/,
+  c: `some str`,
+  d: {
+    // ...
+  }
+}.log
+/**
+ * console.log({
+ *  a: [1,2,3],
+ *  b: /\[some reg/,
+ *  c: `some str`,
+ *  d: {
+ *    // ...
+ *  }
+ * })
+ */
+
 a.b.c.logM 
 // console.log(`a.b.c`, a.b.c)
 
