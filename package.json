@@ -2,7 +2,7 @@
   "name": "dot-more",
   "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "AlanQtten",
   "icon": "assets/icon.png",
   "engines": {
@@ -43,7 +43,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile && npm run test",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",

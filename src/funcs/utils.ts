@@ -8,17 +8,6 @@ export function isStringStatement(statement: string) {
   );
 }
 
-const leftLargeBracketTester = /{/g;
-const rightLargeBracketTester = /}/g;
-const leftMiddleBracketTester = /\[/g;
-const rightMiddleBracketTester = /]/g;
-const leftSmallBracketTester = /\(/g;
-const rightSmallBracketTester = /\)/g;
-
-const countOfChar = (str: string, tester: RegExp) => {
-  return Array.from(str.matchAll(tester) ?? []).length;
-};
-
 export const updateStartIndexWhileContainBlank = (content: string): number => {
   if (content.indexOf(' ') === -1) {
     return 0;
@@ -27,25 +16,14 @@ export const updateStartIndexWhileContainBlank = (content: string): number => {
   return content.split('').findIndex((letter) => letter !== ' ');
 };
 
-const singleQuotaReplacer = /'([^']*)'/g;
-const doubleQuotaReplacer = /"([^']*)"/g;
-const commaReplacer = /`([^']*)`/g;
-const regExpReplacer = /\/([^']*)\//g;
-const isSentence = (sentence: string) => {
-  const _sentence = sentence
-    .replace(commaReplacer, '')
-    .replace(singleQuotaReplacer, '')
-    .replace(doubleQuotaReplacer, '')
-    .replace(regExpReplacer, '');
-
-  return (
-    countOfChar(_sentence, leftLargeBracketTester) ===
-      countOfChar(_sentence, rightLargeBracketTester) &&
-    countOfChar(_sentence, leftMiddleBracketTester) ===
-      countOfChar(_sentence, rightMiddleBracketTester) &&
-    countOfChar(_sentence, leftSmallBracketTester) ===
-      countOfChar(_sentence, rightSmallBracketTester)
-  );
+const isSentence = (sentence: string): boolean => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    new Function(`const a = ${sentence}`);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 export const matchFromContent = (
@@ -102,34 +80,4 @@ export const matchFromContent = (
     ticker--;
     joinContent = `${document.lineAt(ticker).text}\n${joinContent}`;
   }
-
-  // const l = content.length;
-  // const analyzeSentence = content.slice(0, l - triggerMessageLength);
-  // const sliceStart = analyzeSentence.match(/\S/)?.index ?? 0;
-
-  // const lastCharacterIndex = analyzeSentence.length - 1;
-  // const lastCharacter = analyzeSentence[lastCharacterIndex];
-
-  // let isString = false;
-  // if (isStringStatement(analyzeSentence)) {
-  //   const _sliceStart = analyzeSentence
-  //     .slice(0, lastCharacterIndex)
-  //     .split('')
-  //     .findLastIndex((v, index, arr) => {
-  //       return v === lastCharacter && arr[index - 1] !== '\\';
-  //     });
-
-  //   _sliceStart !== -1 && (sliceStart = _sliceStart);
-  //   isString = true;
-  // } else {
-  //   sliceStart = updateStartIndexWhileContainBlank(analyzeSentence);
-  // }
-
-  // sliceStart += preLength ? preLength - 1 : 0;
-
-  // return {
-  //   sliceContent: content.slice(sliceStart, l - triggerMessageLength),
-  //   sliceStart,
-  //   isString,
-  // };
 };
