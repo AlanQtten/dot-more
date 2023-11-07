@@ -1,39 +1,51 @@
 # CHANGELOG
 ## [0.0.1] - 2023-07-05
 ### Features
-* 新增功能.log
-* 新增功能.if
-* 新增功能.logM
-* 新增功能.for
-* 初始化LICENSE和README
+* add feature `.log`
+* add feature `.if`
+* add feature `.logM`
+* add feature `.for`
+* init LICENSE & README
 
 ## [0.0.2] - 2023-07-11
 ### FEATURE
-* 新增react extends并加入了配置
-* 新增功能.useState
-* 新增功能.useMemo
-* 重写了.log/.logM/.if的逻辑以支持了含括号和空格的前置内容
-* 增加了自动化测试脚本
+* add react extends
+* add config `dotMore.disableReactExtends`
+* add feature `.useState`
+* add feature `.useMemo`
+* refactor `.log`,`.logM`,`.if` and support more syntax
+* add auto test script
 ### REMOVED
-* 移除了.for
+* remove `.for`
 
 ## [0.0.3] - 2023-07-17
 
 ### FEATURE
-* 新增.typeof
-* 支持了更多复杂语法
-  * 比如含运算符、typeof的复杂语法
-* README更新为英文版本
+* add feature `.typeof`
+* add support for more syntax
+  * such as sentence with operator or typeof etc
+* change README language to english
 
 ## [0.0.4] - 2023-08-16
 
 ### REMOVE
-* 移除了对单行多句的支持
+* remove support for one line with multiple sentence
 
 ### FEATURE
-* 所有的快捷语法都支持了多行语法
+* add support for multiple line with one sentence
 
 ## [0.0.5] - 2023-08-17
 
 ### FIX
-* 代码优化
+* performance improve
+
+## [0.0.6] - 2023-11-07
+
+### FEATURE
+* add auto import for some api(useState, useMemo etc)
+* add feature `.useContext`
+* add feature `.fc`
+* add config `dotMore.disableAutoImport`
+
+### FIX
+* performance improve

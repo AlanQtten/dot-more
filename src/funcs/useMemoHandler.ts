@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import type { Handler } from './types';
 import { matchFromContent } from './utils';
+import autoImport from './autoImport';
 
 const useMemoHandler: Handler = (editor, edit, position) => {
   const { sliceStart, sliceEnd, sliceContent } =
@@ -26,6 +27,11 @@ const useMemoHandler: Handler = (editor, edit, position) => {
     editor.selection = new vscode.Selection(focus, focus);
 
     vscode.commands.executeCommand('cursorLineEnd');
+  });
+
+  autoImport(edit, {
+    importTarget: 'useMemo',
+    importFrom: 'react',
   });
 };
 

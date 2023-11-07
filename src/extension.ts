@@ -7,6 +7,9 @@ import useStateHandler from './funcs/useStateHandler';
 import useMemoHandler from './funcs/useMemoHandler';
 import { Trigger, getConfigList } from './config';
 import type { Config } from './config';
+import useContextHandler from './funcs/useContextHandler';
+import { Language } from './config/language';
+import functionComponentHandler from './funcs/functionComponentHandler';
 
 const command = 'replace';
 
@@ -61,12 +64,12 @@ export function activate(context: vscode.ExtensionContext) {
   let completionItemProvider: CompletionItemProvider;
   const options = vscode.languages.registerCompletionItemProvider(
     [
-      'html',
-      'javascript',
-      'javascriptreact',
-      'typescript',
-      'typescriptreact',
-      'vue',
+      Language.html,
+      Language.javascript,
+      Language.javascriptreact,
+      Language.typescript,
+      Language.typescriptreact,
+      Language.vue,
     ],
     (completionItemProvider = new CompletionItemProvider()),
     '.'
@@ -96,8 +99,14 @@ export function activate(context: vscode.ExtensionContext) {
       case Trigger.useMemo:
         useMemoHandler(editor, edit, position);
         break;
+      case Trigger.useContext:
+        useContextHandler(editor, edit, position);
+        break;
+      case Trigger.fc:
+        functionComponentHandler(editor, edit, position);
+        break;
       default:
-        throw new Error('error');
+        const e: never = config.label;
     }
 
     return Promise.resolve([]);

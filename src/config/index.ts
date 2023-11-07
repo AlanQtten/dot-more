@@ -7,6 +7,8 @@ export enum Trigger {
   typeof = 'typeof',
   useState = 'useState',
   useMemo = 'useMemo',
+  useContext = 'useContext',
+  fc = 'fc',
 }
 
 export type Config = {
@@ -41,6 +43,14 @@ const reactConfig: Config[] = [
   {
     label: Trigger.useMemo,
     description: 'quick for React.useMemo',
+  },
+  {
+    label: Trigger.useContext,
+    description: 'quick for React.useContext',
+  },
+  {
+    label: Trigger.fc,
+    description: 'quick for React function component',
   },
 ];
 

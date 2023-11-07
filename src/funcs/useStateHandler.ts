@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
 import type { Handler } from './types';
-import { matchFromContent } from './utils';
+import { firstLetterToUpperCase, matchFromContent } from './utils';
+import autoImport from './autoImport';
 
 const useStateHandler: Handler = (editor, edit, position) => {
   const { sliceStart, sliceEnd, sliceContent } =
@@ -15,11 +16,16 @@ const useStateHandler: Handler = (editor, edit, position) => {
     return;
   }
 
-  const replaceText = `const [${sliceContent}, set${sliceContent
-    .slice(0, 1)
-    .toUpperCase()}${sliceContent.slice(1)}] = useState();`;
+  const replaceText = `const [${sliceContent}, set${firstLetterToUpperCase(
+    sliceContent
+  )}] = useState();`;
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
+
+  autoImport(edit, {
+    importTarget: 'useState',
+    importFrom: 'react',
+  });
 };
 
 export default useStateHandler;

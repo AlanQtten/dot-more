@@ -35,6 +35,9 @@ const tester = () => {
 
           rpText = _rpText;
         },
+        insert() {
+          // TODO
+        },
       },
       {
         line,
