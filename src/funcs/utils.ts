@@ -103,3 +103,13 @@ export const isTsDocument = (document?: vscode.TextDocument) => {
 
   return lId === Language.typescriptreact || lId === Language.typescript;
 };
+
+export const sliceBy = (content: string, start: string, end: string) => {
+  const sliceStart = content.indexOf(start);
+  const sliceEnd = content.indexOf(end);
+  if (sliceStart === -1 || sliceEnd === -1) {
+    return '';
+  }
+
+  return content.slice(sliceStart, sliceEnd + end.length);
+};

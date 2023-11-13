@@ -22,7 +22,7 @@ const useStateHandler: Handler = (editor, edit, position) => {
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
 
-  autoImport(edit, {
+  autoImport(editor, edit, {
     importTarget: 'useState',
     importFrom: 'react',
   });

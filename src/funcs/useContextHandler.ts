@@ -59,7 +59,7 @@ export const use${upper} = () => {
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
 
-  autoImport(edit, {
+  autoImport(editor, edit, {
     importTarget,
     importFrom: 'react',
   });
