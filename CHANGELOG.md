@@ -54,3 +54,11 @@
 
 ### FIX
 * fix repeat import issue
+
+## [0.0.8] - 2023-11-30
+
+### FEATURE
+* add feature `.useEffect`
+
+### CHORE
+* adjust code with `.useContext`

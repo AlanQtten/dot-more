@@ -8,6 +8,7 @@ export enum Trigger {
   useState = 'useState',
   useMemo = 'useMemo',
   useContext = 'useContext',
+  useEffect = 'useEffect',
   fc = 'fc',
 }
 
@@ -47,6 +48,10 @@ const reactConfig: Config[] = [
   {
     label: Trigger.useContext,
     description: 'quick for React.useContext',
+  },
+  {
+    label: Trigger.useEffect,
+    description: 'quick for React.useEffect',
   },
   {
     label: Trigger.fc,

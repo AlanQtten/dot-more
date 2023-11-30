@@ -23,7 +23,7 @@ const useContextTestData: InlineCase<ExtraOptions>[] = [
       `
 const AppleContext = createContext(null);
 
-export const AppleContextProvider = (props) => {
+export const AppleProvider = (props) => {
   const { children, value } = props;
 
   return <AppleContext.Provider value={value}>{children}</AppleContext.Provider>;
@@ -50,11 +50,11 @@ type AppleContextValue = null
 
 const AppleContext = createContext<AppleContextValue>(null);
 
-type AppleContextProviderProps = PropsWithChildren<{
+type AppleProviderProps = PropsWithChildren<{
   value: AppleContextValue;
 }>;
 
-export const AppleContextProvider = (props: AppleContextProviderProps) => {
+export const AppleProvider = (props: AppleProviderProps) => {
   const { children, value } = props;
 
   return <AppleContext.Provider value={value}>{children}</AppleContext.Provider>;
