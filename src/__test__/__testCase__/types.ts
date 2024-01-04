@@ -23,10 +23,14 @@ export type InlineCase<T = null> = [
   ]?,
   T?,
 ];
+
+export type NamedInlineCase<T = null> = Record<string, InlineCase<T>[]>;
+
 export type Case<T = null> = [
-  Record<number, string>,
+  LineMap,
   [string, NumberPackage],
   /* process line */ number,
-  /* debug */ boolean,
   T?,
 ];
+
+export type NamedCase<T = null> = Record<string, Case<T>[]>;

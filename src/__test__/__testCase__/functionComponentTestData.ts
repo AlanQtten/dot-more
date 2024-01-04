@@ -1,10 +1,10 @@
-import { Language } from '../../../config/language';
-import { callable } from '../utilsForTest';
+import { Language } from '../../config/language';
+import { callable } from '../utils';
 import type {
-  InlineCase,
-  Case,
   NumberPackage,
   NumberOrProcessNumberPackage,
+  NamedInlineCase,
+  NamedCase,
 } from './types';
 
 export type ExtraOptions = {
@@ -16,46 +16,50 @@ const singleLineNumberPackage = (
   startCharacter = 0
 ): NumberOrProcessNumberPackage => [0, startCharacter, 0, (s) => s[0].length];
 
-const functionComponentTestData: InlineCase<ExtraOptions>[] = [
-  // test for basic func in Js
-  [
-    'apple',
+const functionComponentTestData: NamedInlineCase<ExtraOptions> = {
+  // ================ case ================
+  'basic func with Js': [
     [
-      `const Apple = (props) => {
+      'apple',
+      [
+        `const Apple = (props) => {
     const { } = props;
 
     return <div>Apple</div>
 }
 
 export default Apple`,
-      singleLineNumberPackage(),
+        singleLineNumberPackage(),
+      ],
+      {
+        language: Language.javascript,
+        getText: () => '',
+      },
     ],
-    {
-      language: Language.javascript,
-      getText: () => '',
-    },
-  ],
-  // test for basic func in Js and content has `export default`
-  [
-    'apple',
+    // with `export default`
     [
-      `const Apple = (props) => {
+      'apple',
+      [
+        `const Apple = (props) => {
     const { } = props;
 
     return <div>Apple</div>
 }`,
-      singleLineNumberPackage(),
+        singleLineNumberPackage(),
+      ],
+      {
+        language: Language.javascript,
+        getText: () => '\nexport default SomethingElse\n',
+      },
     ],
-    {
-      language: Language.javascript,
-      getText: () => '\nexport default SomethingElse\n',
-    },
   ],
-  // test for basic func in Ts
-  [
-    'apple',
+
+  // ================ case ================
+  'basic func with Ts': [
     [
-      `type AppleProps = {}
+      'apple',
+      [
+        `type AppleProps = {}
 
 const Apple = (props: AppleProps) => {
     const { } = props;
@@ -64,25 +68,23 @@ const Apple = (props: AppleProps) => {
 }
 
 export default Apple`,
-      singleLineNumberPackage(),
+        singleLineNumberPackage(),
+      ],
+      {
+        language: Language.typescript,
+        getText: () => '',
+      },
     ],
-    {
-      language: Language.typescript,
-      getText: () => '',
-    },
   ],
-];
+};
 
-const _functionComponentTestData: Case<ExtraOptions>[] =
-  functionComponentTestData.map(
+export default Object.keys(functionComponentTestData).reduce<
+  NamedCase<ExtraOptions>
+>((namedCase, name) => {
+  namedCase[name] = functionComponentTestData[name].map(
     ([
       _source,
-      [
-        _target,
-        _targetNumberPackage = [],
-        _processLine = 0,
-        debug = false,
-      ] = [],
+      [_target, _targetNumberPackage = [], _processLine = 0] = [],
       extraOption,
     ]) => {
       const source = _source.split('\n');
@@ -112,14 +114,9 @@ const _functionComponentTestData: Case<ExtraOptions>[] =
             source[lastIndex].length,
           ];
 
-      return [
-        lm,
-        [target, targetNumberPackage],
-        processLine,
-        debug,
-        extraOption,
-      ];
+      return [lm, [target, targetNumberPackage], processLine, extraOption];
     }
   );
 
-export default _functionComponentTestData;
+  return namedCase;
+}, {});

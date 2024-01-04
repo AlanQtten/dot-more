@@ -3,7 +3,8 @@
  * If options.editorconfig is true and an .editorconfig file is in your project,
  * Prettier will parse it and convert its properties to the corresponding Prettier configuration.
  */
-module.exports = {
+
+export default {
   // 对应 .editorconfig max_line_length，暂时关闭
   // printWidth: 120,
 

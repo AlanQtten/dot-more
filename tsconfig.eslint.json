@@ -1,9 +1,14 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": true
+    "types": ["@types/node"],
+    "noEmit": true,
+    "allowJs": true
   },
+  "extends": "./tsconfig.json",
   "include": [
     "src",
-  ],
+    ".eslintrc.cjs",
+    "prettier.config.js",
+    "vite.config.ts",
+  ]
 }
