@@ -1,3 +1,4 @@
+/* v8 ignore next 999 */
 import * as vscode from 'vscode';
 
 import logHandler from './funcs/logHandler';

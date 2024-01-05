@@ -10,7 +10,7 @@ import typeofHandler from '../funcs/typeofHandler';
 import ifHandler from '../funcs/ifHandler';
 
 vi.mock('vscode', () => {
-  return vscode;
+  return vscode();
 });
 
 const _tester = <
@@ -95,5 +95,23 @@ describe('test for .if', () => {
         expect(_tester(ifHandler, line, lineMap)).toStrictEqual(result);
       });
     });
+  });
+});
+
+describe('extra test', () => {
+  // just for coverage
+  test('extra test for coverage', () => {
+    expect(_tester(logHandler, 0, { 0: '.log' })).toStrictEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(ifHandler, 0, { 0: '.log' })).toStrictEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(typeofHandler, 0, { 0: '.log' })).toStrictEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
   });
 });
