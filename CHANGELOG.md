@@ -67,3 +67,11 @@
 
 ### REFACTOR
 * refactor project with `pnpm` & `vite` & `vitest`
+
+## [1.0.1] - 2024-01-09
+
+### FIX
+* fix some issue with `autoImport`
+
+### TEST
+* add test case for `.useEffect`

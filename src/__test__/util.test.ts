@@ -3,7 +3,7 @@ import { vscode } from './utils';
 import {
   isStringStatement,
   updateStartIndexWhileContainBlank,
-  sliceBy,
+  sliceByEndOf,
   isTsDocument,
 } from '../funcs/utils';
 import autoImport from '../funcs/autoImport';
@@ -26,10 +26,12 @@ describe('util test', () => {
   });
 
   test('sliceBy', () => {
-    expect(sliceBy(`apple1 apple2 apple3`, 'apple1', 'apple2')).toEqual(
+    expect(sliceByEndOf(`apple1 apple2 apple3`, 'apple2', 'apple1')).toEqual(
       'apple1 apple2'
     );
-    expect(sliceBy(`apple1 apple2 apple3`, 'banana', 'banana')).toEqual('');
+    expect(sliceByEndOf(`apple1 apple2 apple3`, 'banana', 'banana')).toEqual(
+      ''
+    );
   });
 
   test('isTsDocument', () => {
@@ -72,5 +74,32 @@ describe('autoImport test', () => {
     expect(wrapAutoImport('', ['useState', 'useMemo'], 'react')).toEqual(
       `import { useState, useMemo } from 'react';\n`
     );
+
+    expect(
+      wrapAutoImport(
+        `
+import {
+  CompA,
+  CompB,
+} from 'some-dep';
+import { useState, useMemo, useContext } from 'react'
+    `,
+        'useState',
+        'react'
+      )
+    ).toEqual('');
+    expect(
+      wrapAutoImport(
+        `
+import {
+  CompA,
+  CompB,
+} from 'some-dep';
+import { useMemo, useContext } from 'react'
+    `,
+        'useState',
+        'react'
+      )
+    ).toEqual(`import { useState } from 'react';\n`);
   });
 });

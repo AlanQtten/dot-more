@@ -4,6 +4,7 @@ import useMemoTestData from './__testCase__/useMemoTestData';
 import useContextTestData, {
   ExtraOptions,
 } from './__testCase__/useContextTestData';
+import useEffectTestData from './__testCase__/useEffectTestData';
 import functionComponentTestData, {
   ExtraOptions as FCExtraOptions,
 } from './__testCase__/functionComponentTestData';
@@ -12,6 +13,7 @@ import { vscode, Range, Position } from './utils';
 import useStateHandler from '../funcs/useStateHandler';
 import useMemoHandler from '../funcs/useMemoHandler';
 import useContextHandler from '../funcs/useContextHandler';
+import useEffectHandler from '../funcs/useEffectHandler';
 import functionComponentHandler from '../funcs/functionComponentHandler';
 import { Language } from '../config/language';
 
@@ -24,6 +26,7 @@ const _tester = <
     | typeof useStateHandler
     | typeof useMemoHandler
     | typeof useContextHandler
+    | typeof useEffectHandler
     | typeof functionComponentHandler,
 >(
   jsExtendHandler: T,
@@ -104,6 +107,16 @@ describe('test for .useContext', () => {
   });
 });
 
+describe('test for .useEffect', () => {
+  Object.keys(useEffectTestData).forEach((name) => {
+    test(`${name}(${useEffectTestData[name].length})`, () => {
+      useEffectTestData[name].forEach(([lineMap, result, line]) => {
+        expect(_tester(useEffectHandler, line, lineMap)).toStrictEqual(result);
+      });
+    });
+  });
+});
+
 describe('test for .fc', () => {
   Object.keys(functionComponentTestData).forEach((name) => {
     test(`${name}(${functionComponentTestData[name].length})`, () => {
@@ -138,6 +151,7 @@ describe('extra test', () => {
       '',
       [0, 0, 0, 0],
     ]);
+    expect(_tester(useEffectHandler, 0, { 0: '' })).toEqual(['', [0, 0, 0, 0]]);
     expect(_tester(functionComponentHandler, 0, { 0: '' })).toEqual([
       '',
       [0, 0, 0, 0],
