@@ -13,7 +13,7 @@ const useEffectHandler: Handler = (editor, edit, position) => {
   }
 
   const preBlank = Array(sliceStart.character).fill(' ').join('');
-  const replaceText = `useEffect(() => {\n${preBlank}\tconsole.log(\`${sliceContent} change\`)\n${preBlank}}, [${sliceContent}])`;
+  const replaceText = `useEffect(() => {\n${preBlank}\tconsole.log(\`${sliceContent} change\`, ${sliceContent})\n${preBlank}}, [${sliceContent}])`;
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
 

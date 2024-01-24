@@ -16,7 +16,7 @@ const useEffectTestData: NamedInlineCase = {
     [
       'apple',
       [
-        `useEffect(() => {\n\tconsole.log(\`apple change\`)\n}, [apple])`,
+        `useEffect(() => {\n\tconsole.log(\`apple change\`, apple)\n}, [apple])`,
         singleLineNumberPackage(),
       ],
     ],
@@ -24,9 +24,9 @@ const useEffectTestData: NamedInlineCase = {
     [
       '  apple',
       [
-        `useEffect(() => {\n${space(2)}\tconsole.log(\`apple change\`)\n${space(
+        `useEffect(() => {\n${space(
           2
-        )}}, [apple])`,
+        )}\tconsole.log(\`apple change\`, apple)\n${space(2)}}, [apple])`,
         singleLineNumberPackage(2),
       ],
     ],
