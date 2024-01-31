@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.0.2
+
+`2024-01-31`
+
+### PERF
+* print value with `.useEffect`
+* support some es6 syntax with `import`(e.g. import.meta.url、import(...))
+
 ## 1.0.1 
 
 `2024-01-09`
