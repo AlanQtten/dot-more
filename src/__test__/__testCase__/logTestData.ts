@@ -15,6 +15,11 @@ const dotLogTestData: NamedInlineCase = {
     [`  "a bc"`],
     [`   'a bc'`],
     ['    `a bc`'],
+    // some es6 syntax and some similar syntax
+    ['import'],
+    ['import.meta.url'],
+    [`import('./xxx.js')`],
+    [`apple['import']`],
   ],
 
   // ================ case ================
