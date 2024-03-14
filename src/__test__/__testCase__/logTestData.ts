@@ -33,6 +33,10 @@ const dotLogTestData: NamedInlineCase = {
     ['   str.slice(a.b.c, 1, 50)'],
     ['    str.slice(String(a.b.c), 1, 50)'],
     ['     arr.filter(item => item !== -1 && Boolean(item))'],
+    // fully wrap with bracket syntax
+    ['(x,y)', ['console.log(x,y)']],
+    ['(x,y,z)', ['console.log(x,y,z)']],
+    ['(x, y, z)', ['console.log(x, y, z)']],
   ],
 
   // ================ case ================
@@ -228,6 +232,102 @@ someArr.map((item, i) => {
           },
         ],
         13,
+      ],
+    ],
+    // multi line and fully wrap with bracket syntax
+    [
+      `({a:1,b:2,c:3,
+d:4}, a, b, c)`,
+      [
+        `console.log({a:1,b:2,c:3,\nd:4}, a, b, c)`,
+        [
+          0,
+          0,
+          1,
+          (s) => {
+            return s[1].length;
+          },
+        ],
+        1,
+      ],
+    ],
+    [
+      `({a:1,b:2,c:3,
+e: [1,2,3, { test: 'ccc' }],
+d:4}, a, b, c)`,
+      [
+        "console.log({a:1,b:2,c:3,\ne: [1,2,3, { test: 'ccc' }],\nd:4}, a, b, c)",
+        [
+          0,
+          0,
+          2,
+          (s) => {
+            return s[2].length;
+          },
+        ],
+        2,
+      ],
+    ],
+    [
+      `console.log('some other code')
+const a = 1
+const b = a + 1
+const c = a + b + 'c'
+
+function f() {
+  function __f() {
+    (arr.map(item => {
+      const _item = String(item)
+      const __item = Number(_item)
+      const ___item = Boolean(__item)
+
+      return {
+        transform: [_item, __item, ___item.map(c => ({
+          name: c.b.a
+        }))],
+        reg: /cc__\\[/,
+        str: \`\${_item}_____[\${___item}]]]]\`,
+        strIn: _item + '__item' + ___item,
+        strOut: "_item",
+        inAndOut: {
+          [Symbol(__item)]: {
+            ...Object.keys(__item + ___item)
+          }
+        }
+      }
+    }), a, b, c)
+  }
+}`,
+      [
+        `console.log(arr.map(item => {
+      const _item = String(item)
+      const __item = Number(_item)
+      const ___item = Boolean(__item)
+
+      return {
+        transform: [_item, __item, ___item.map(c => ({
+          name: c.b.a
+        }))],
+        reg: /cc__\\[/,
+        str: \`\${_item}_____[\${___item}]]]]\`,
+        strIn: _item + '__item' + ___item,
+        strOut: "_item",
+        inAndOut: {
+          [Symbol(__item)]: {
+            ...Object.keys(__item + ___item)
+          }
+        }
+      }
+    }), a, b, c)`,
+        [
+          7,
+          4,
+          26,
+          (s) => {
+            return s[26].length;
+          },
+        ],
+        26,
       ],
     ],
   ],

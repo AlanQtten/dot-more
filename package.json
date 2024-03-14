@@ -2,7 +2,7 @@
   "name": "dot-more",
   "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "AlanQtten",
   "icon": "assets/icon.png",
   "engines": {
