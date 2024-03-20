@@ -2,7 +2,7 @@
   "name": "dot-more",
   "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publisher": "AlanQtten",
   "icon": "assets/icon.png",
   "engines": {
@@ -52,7 +52,7 @@
     "vscode:prepublish": "vitest --run",
     "compile": "vite build --mode production",
     "debug": "vite build --watch",
-    "test": "vitest",
+    "test": "vitest --coverage --bail 1",
     "build": "pnpm compile && vsce package --no-dependencies"
   },
   "devDependencies": {

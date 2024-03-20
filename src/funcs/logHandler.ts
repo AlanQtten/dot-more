@@ -28,17 +28,14 @@ const logHandler: Handler<LogHandlerOptions> = (
 
   const mergedWithMessage = withMessage && !isString;
   const needBracket = !(
-    sliceContent.startsWith('(') &&
-    sliceContent.endsWith(')') &&
-    !mergedWithMessage
+    sliceContent.startsWith('(') && sliceContent.endsWith(')')
   );
 
   if (mergedWithMessage) {
-    replaceText = `console.log${
-      needBracket ? '(' : ''
-    }\`${sliceContent.replaceAll('`', '\\`')}\`, ${sliceContent}${
-      needBracket ? ')' : ''
-    }`;
+    replaceText = `console.log(\`${sliceContent.replaceAll(
+      '`',
+      '\\`'
+    )}\`, ${sliceContent})`;
   } else {
     replaceText = `console.log${needBracket ? '(' : ''}${sliceContent}${
       needBracket ? ')' : ''

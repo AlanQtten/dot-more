@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 1.0.4
+
+`2024-03-19`
+
+## PERF
+* support log with something comment behind, eg:
+```js
+apple.log // some comment behind
+// =>
+console.log(apple) // some comment behind
+
+list.map(item => ({
+  ...item
+})).log // some comment behind
+// =>
+console.log(list.map(item => ({
+  ...item
+}))) // some comment behind
+```
+
 ## 1.0.3
 
 `2024-03-14`
