@@ -1,15 +1,22 @@
+import * as vscode from 'vscode';
+
 const stringSymbolTester = /'|"|`/;
 export function isStringStatement(statement: string) {
-  const _statement = statement.trim();
-
   return (
-    stringSymbolTester.test(_statement[0]) &&
-    stringSymbolTester.test(_statement[_statement.length - 1])
+    stringSymbolTester.test(statement[0]) &&
+    stringSymbolTester.test(statement[statement.length - 1])
   );
 }
 
-const calcLength = (strArr: string[]) => {
-  return strArr.reduce((l, c) => l + c.length + 1, 0);
+const leftLargeBracketTester = /{/g;
+const rightLargeBracketTester = /}/g;
+const leftMiddleBracketTester = /\[/g;
+const rightMiddleBracketTester = /]/g;
+const leftSmallBracketTester = /\(/g;
+const rightSmallBracketTester = /\)/g;
+
+const countOfChar = (str: string, tester: RegExp) => {
+  return Array.from(str.matchAll(tester) ?? []).length;
 };
 
 export const updateStartIndexWhileContainBlank = (content: string): number => {
@@ -20,49 +27,109 @@ export const updateStartIndexWhileContainBlank = (content: string): number => {
   return content.split('').findIndex((letter) => letter !== ' ');
 };
 
+const singleQuotaReplacer = /'([^']*)'/g;
+const doubleQuotaReplacer = /"([^']*)"/g;
+const commaReplacer = /`([^']*)`/g;
+const regExpReplacer = /\/([^']*)\//g;
+const isSentence = (sentence: string) => {
+  const _sentence = sentence
+    .replace(commaReplacer, '')
+    .replace(singleQuotaReplacer, '')
+    .replace(doubleQuotaReplacer, '')
+    .replace(regExpReplacer, '');
+
+  return (
+    countOfChar(_sentence, leftLargeBracketTester) ===
+      countOfChar(_sentence, rightLargeBracketTester) &&
+    countOfChar(_sentence, leftMiddleBracketTester) ===
+      countOfChar(_sentence, rightMiddleBracketTester) &&
+    countOfChar(_sentence, leftSmallBracketTester) ===
+      countOfChar(_sentence, rightSmallBracketTester)
+  );
+};
+
 export const matchFromContent = (
-  content: string,
+  document: vscode.TextDocument,
+  position: vscode.Position,
   trigger: string
 ):
   | {
-      sliceContent?: string;
-      sliceStart?: number;
-      isString?: boolean;
+      sliceStart: vscode.Position;
+      sliceEnd: vscode.Position;
+      sliceContent: string;
+      isString: boolean;
     }
   | undefined => {
   const triggerMessageLength = trigger.length;
-  if (content.length <= triggerMessageLength) {
+  const currentRowText = document.lineAt(position).text;
+  if (currentRowText.length <= triggerMessageLength) {
     return;
   }
-  const l = content.length;
-  const logicSentences = content.slice(0, l - triggerMessageLength).split(';');
-  const analyzeSentence = logicSentences.pop() ?? '';
-  const preLength = calcLength(logicSentences);
+  const currentRow = currentRowText.slice(
+    0,
+    currentRowText.length - triggerMessageLength
+  );
+  const trimCurrentRow = currentRow.trim();
 
-  const lastCharacterIndex = analyzeSentence.length - 1;
-  const lastCharacter = analyzeSentence[lastCharacterIndex];
+  // 分析当前行是否成句
+  if (isSentence(trimCurrentRow)) {
+    return {
+      sliceStart: new vscode.Position(
+        position.line,
+        currentRow.length - currentRow.trimStart().length
+      ),
+      sliceEnd: new vscode.Position(position.line, currentRowText.length),
+      sliceContent: trimCurrentRow,
+      isString: isStringStatement(trimCurrentRow),
+    };
+  }
+  let ticker = position.line - 1;
+  let joinContent = `${document.lineAt(ticker).text}\n${currentRow}`;
 
-  let sliceStart = 0;
-  let isString = false;
-  if (isStringStatement(analyzeSentence)) {
-    const _sliceStart = analyzeSentence
-      .slice(0, lastCharacterIndex)
-      .split('')
-      .findLastIndex((v, index, arr) => {
-        return v === lastCharacter && arr[index - 1] !== '\\';
-      });
-
-    _sliceStart !== -1 && (sliceStart = _sliceStart);
-    isString = true;
-  } else {
-    sliceStart = updateStartIndexWhileContainBlank(analyzeSentence);
+  while (ticker >= 0) {
+    const tickRow = document.lineAt(ticker).text;
+    if (isSentence(joinContent)) {
+      return {
+        sliceStart: new vscode.Position(
+          ticker,
+          tickRow.length - tickRow.trimStart().length
+        ),
+        sliceEnd: new vscode.Position(position.line, currentRowText.length),
+        sliceContent: joinContent.trimStart(),
+        isString: false,
+      };
+    }
+    ticker--;
+    joinContent = `${document.lineAt(ticker).text}\n${joinContent}`;
   }
 
-  sliceStart += preLength;
+  // const l = content.length;
+  // const analyzeSentence = content.slice(0, l - triggerMessageLength);
+  // const sliceStart = analyzeSentence.match(/\S/)?.index ?? 0;
 
-  return {
-    sliceContent: content.slice(sliceStart, l - triggerMessageLength),
-    sliceStart,
-    isString,
-  };
+  // const lastCharacterIndex = analyzeSentence.length - 1;
+  // const lastCharacter = analyzeSentence[lastCharacterIndex];
+
+  // let isString = false;
+  // if (isStringStatement(analyzeSentence)) {
+  //   const _sliceStart = analyzeSentence
+  //     .slice(0, lastCharacterIndex)
+  //     .split('')
+  //     .findLastIndex((v, index, arr) => {
+  //       return v === lastCharacter && arr[index - 1] !== '\\';
+  //     });
+
+  //   _sliceStart !== -1 && (sliceStart = _sliceStart);
+  //   isString = true;
+  // } else {
+  //   sliceStart = updateStartIndexWhileContainBlank(analyzeSentence);
+  // }
+
+  // sliceStart += preLength ? preLength - 1 : 0;
+
+  // return {
+  //   sliceContent: content.slice(sliceStart, l - triggerMessageLength),
+  //   sliceStart,
+  //   isString,
+  // };
 };

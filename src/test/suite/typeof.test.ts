@@ -5,44 +5,54 @@ import * as vscode from 'vscode';
 import typeofHandler from '../../funcs/typeofHandler';
 import typeofTestData from './cases/typeofTestData';
 import { getSuiteName } from './utilsForTest';
+import { LineMap } from './cases/types';
+
+// const typeofTestData: any[] = [];
 
 const tester = () => {
-  const _tester = (text: string) => {
+  const _tester = (lineMap: LineMap, line: number, debug: boolean) => {
     let rpText = '';
-    let start = 0;
-    let end = 0;
+    let startLine = 0;
+    let startCharacter = 0;
+    let endLine = 0;
+    let endCharacter = 0;
     typeofHandler(
       {
         document: {
           // @ts-ignore
-          lineAt() {
-            return { text };
+          lineAt(p) {
+            return { text: lineMap[typeof p === 'number' ? p : p.line] };
           },
         },
       },
       {
         replace(range: vscode.Range, _rpText) {
-          start = range.start.character;
-          end = range.end.character;
+          startLine = range.start.line;
+          startCharacter = range.start.character;
+
+          endLine = range.end.line;
+          endCharacter = range.end.character;
+
           rpText = _rpText;
         },
       },
       {
-        line: 0,
+        line,
       }
     );
 
-    return [rpText, start, end];
+    return [rpText, [startLine, startCharacter, endLine, endCharacter]];
   };
 
   let testCaseCount = 0;
-  typeofTestData.forEach(([text, result]) => {
+  typeofTestData.forEach(([lineMap, result, line, debug]) => {
     testCaseCount++;
-    assert.deepEqual(_tester(text), result);
+    assert.deepEqual(_tester(lineMap, line, debug), result);
   });
   console.log(`  Test Case Count: ${testCaseCount}`);
 };
 
-suite(getSuiteName('typeof'), () => {
-  test('.typeof:', tester);
-});
+typeofTestData.length &&
+  suite(getSuiteName('.typeof'), () => {
+    test('.typeof:', tester);
+  });

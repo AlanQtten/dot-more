@@ -4,24 +4,17 @@ import type { Handler } from './types';
 import { matchFromContent } from './utils';
 
 const ifHandler: Handler = (editor, edit, position) => {
-  const content = editor.document.lineAt(position).text;
+  const { sliceStart, sliceEnd, sliceContent } =
+    matchFromContent(editor.document, position, '.if') ?? {};
 
-  const { sliceContent, sliceStart } = matchFromContent(content, '.if') ?? {};
-
-  if (sliceStart === undefined) {
+  if (!sliceStart || !sliceEnd) {
     return;
   }
 
-  const preBlank = Array(sliceStart).fill(' ').join('');
+  const preBlank = Array(sliceStart.character).fill(' ').join('');
   const replaceText = `if(${sliceContent}) {\n${preBlank}\t\n${preBlank}}`;
 
-  edit.replace(
-    new vscode.Range(
-      new vscode.Position(position.line, sliceStart),
-      new vscode.Position(position.line, content.length)
-    ),
-    replaceText
-  );
+  edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);
 
   const focus = new vscode.Position(position.line + 1, 0);
 
