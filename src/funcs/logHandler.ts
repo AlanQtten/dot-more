@@ -26,14 +26,23 @@ const logHandler: Handler<LogHandlerOptions> = (
 
   let replaceText = '';
 
-  const _withMessage = withMessage && !isString;
-  if (_withMessage) {
-    replaceText = `console.log(\`${sliceContent.replaceAll(
-      '`',
-      '\\`'
-    )}\`, ${sliceContent})`;
+  const mergedWithMessage = withMessage && !isString;
+  const needBracket = !(
+    sliceContent.startsWith('(') &&
+    sliceContent.endsWith(')') &&
+    !mergedWithMessage
+  );
+
+  if (mergedWithMessage) {
+    replaceText = `console.log${
+      needBracket ? '(' : ''
+    }\`${sliceContent.replaceAll('`', '\\`')}\`, ${sliceContent}${
+      needBracket ? ')' : ''
+    }`;
   } else {
-    replaceText = `console.log(${sliceContent})`;
+    replaceText = `console.log${needBracket ? '(' : ''}${sliceContent}${
+      needBracket ? ')' : ''
+    }`;
   }
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);

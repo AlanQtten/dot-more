@@ -18,7 +18,7 @@ export type InlineCase<T = null> = [
   /* transform source */ string,
   [
     /* transform result */ string | undefined,
-    NumberOrProcessNumberPackage,
+    NumberOrProcessNumberPackage?,
     /* process line, default: last */ number?,
     /* debug default: false */ boolean?,
   ]?,
