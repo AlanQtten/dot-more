@@ -1,16 +1,25 @@
 {
-	"compilerOptions": {
-		"module":"CommonJS",
-		"target": "es6",
-		"lib": ["ESNext"],
-		"outDir": "out",
-		"sourceMap": true,
-		"strict": true,
-		"rootDir": "src",
-    "esModuleInterop": true,
-	},
-	"exclude": [
-		"node_modules",
-		".vscode-test"
-	]
+  "compilerOptions": {
+    "target": "ES5",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "outDir": "./out",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    
+    /* Linting */
+    "strict": false,
+
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src",
+  ],
 }
