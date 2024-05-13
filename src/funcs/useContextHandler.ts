@@ -37,13 +37,13 @@ const ${upper}Context = createContext${
   }(null);
 ${
   isTs
-    ? `\ntype ${upper}ContextProviderProps = PropsWithChildren<{
+    ? `\ntype ${upper}ProviderProps = PropsWithChildren<{
   value: ${upper}ContextValue;
 }>;\n`
     : ''
 }
-export const ${upper}ContextProvider = (props${
-    isTs ? `: ${upper}ContextProviderProps` : ''
+export const ${upper}Provider = (props${
+    isTs ? `: ${upper}ProviderProps` : ''
   }) => {
   const { children, value } = props;
 

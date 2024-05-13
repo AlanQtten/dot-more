@@ -10,6 +10,7 @@ import type { Config } from './config';
 import useContextHandler from './funcs/useContextHandler';
 import { Language } from './config/language';
 import functionComponentHandler from './funcs/functionComponentHandler';
+import useEffectHandler from './funcs/useEffectHandler';
 
 const command = 'replace';
 
@@ -101,6 +102,9 @@ export function activate(context: vscode.ExtensionContext) {
         break;
       case Trigger.useContext:
         useContextHandler(editor, edit, position);
+        break;
+      case Trigger.useEffect:
+        useEffectHandler(editor, edit, position);
         break;
       case Trigger.fc:
         functionComponentHandler(editor, edit, position);
