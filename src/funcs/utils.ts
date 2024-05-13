@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Language } from '../config/language';
 
 const stringSymbolTester = /'|"|`/;
+const es6SyntaxTester = /import/g;
 export function isStringStatement(statement: string) {
   return (
     stringSymbolTester.test(statement[0]) &&
@@ -17,10 +18,21 @@ export const updateStartIndexWhileContainBlank = (content: string): number => {
   return content.split('').findIndex((letter) => letter !== ' ');
 };
 
+const presetSentence = (sentence: string) => {
+  if (es6SyntaxTester.test(sentence)) {
+    return sentence.replaceAll(
+      es6SyntaxTester,
+      '____globalThis____' // just a wired name to avoid duplicate variable issue
+    );
+  }
+
+  return sentence;
+};
+
 const isSentence = (sentence: string): boolean => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    new Function(`const a = ${sentence}`);
+    new Function(`const a = ${presetSentence(sentence)}`);
     return true;
   } catch (e) {
     return false;
