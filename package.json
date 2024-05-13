@@ -2,7 +2,7 @@
   "name": "dot-more",
   "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "AlanQtten",
   "icon": "assets/icon.png",
   "engines": {
@@ -38,6 +38,11 @@
           "type": "boolean",
           "default": false,
           "description": "whether to disable react grammar extend"
+        },
+        "dotMore.disableAutoImport": {
+          "type": "boolean",
+          "default": true,
+          "description": "whether to disable auto import api, such as `useState`"
         }
       }
     }

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { Language } from '../config/language';
 
 const stringSymbolTester = /'|"|`/;
 export function isStringStatement(statement: string) {
@@ -80,4 +81,25 @@ export const matchFromContent = (
     ticker--;
     joinContent = `${document.lineAt(ticker).text}\n${joinContent}`;
   }
+};
+
+export const firstLetterToUpperCase = (str: string) => {
+  return `${str.slice(0, 1).toUpperCase()}${str.slice(1)}`;
+};
+
+export const firstLetterToLowerCase = (str: string) => {
+  return `${str.slice(0, 1).toLowerCase()}${str.slice(1)}`;
+};
+
+export const contentHasText = (content: string, text: string) => {
+  return (
+    content.split('\n').findIndex((line) => line.indexOf(text) !== -1) !== -1
+  );
+};
+
+export const isTsDocument = (document?: vscode.TextDocument) => {
+  const _document = document ?? vscode.window.activeTextEditor?.document;
+  const lId = _document?.languageId;
+
+  return lId === Language.typescriptreact || lId === Language.typescript;
 };

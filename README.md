@@ -73,9 +73,16 @@ apple.useMemo
  *   ${c}
  * }, [])
  */
+
+apple.useContext
+// ...
+
+apple.fc
+// ...
 ```
 
 ## Config
 |config|description|default value|
 |---|---|---|
 |dotMore.disableReactExtends|whether to disable react grammar extend|false|
+|dotMore.disableAutoImport|whether to disable auto import api, such as `useState`|true|

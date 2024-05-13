@@ -2,27 +2,36 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 
-import useStateHandler from '../../funcs/useStateHandler';
-import useStateTestData from './cases/useStateTestData';
+import functionComponentHandler from '../../funcs/functionComponentHandler';
+import functionComponentTestData, {
+  ExtraOptions,
+} from './cases/functionComponentTestData';
 import { getSuiteName } from './utilsForTest';
 import { LineMap } from './cases/types';
 
-// const useStateTestData: any[] = [];
+// const functionComponentTestData: any[] = [];
 
 const tester = () => {
-  const _tester = (lineMap: LineMap, line: number, debug: boolean) => {
+  const _tester = (
+    lineMap: LineMap,
+    line: number,
+    debug: boolean,
+    extraOption: ExtraOptions
+  ) => {
     let rpText = '';
     let startLine = 0;
     let startCharacter = 0;
     let endLine = 0;
     let endCharacter = 0;
-    useStateHandler(
+    functionComponentHandler(
       {
         document: {
           // @ts-ignore
           lineAt(p) {
             return { text: lineMap[typeof p === 'number' ? p : p.line] };
           },
+          languageId: extraOption.language,
+          getText: extraOption.getText,
         },
       },
       {
@@ -48,14 +57,16 @@ const tester = () => {
   };
 
   let testCaseCount = 0;
-  useStateTestData.forEach(([lineMap, result, line, debug]) => {
-    testCaseCount++;
-    assert.deepEqual(_tester(lineMap, line, debug), result);
-  });
+  functionComponentTestData.forEach(
+    ([lineMap, result, line, debug, extraOption]) => {
+      testCaseCount++;
+      assert.deepEqual(_tester(lineMap, line, debug, extraOption!), result);
+    }
+  );
   console.log(`  Test Case Count: ${testCaseCount}`);
 };
 
-useStateTestData.length &&
-  suite(getSuiteName('.useState'), () => {
-    test('.useState:', tester);
+functionComponentTestData.length &&
+  suite(getSuiteName('.fc'), () => {
+    test('.fc:', tester);
   });

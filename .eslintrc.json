@@ -23,6 +23,7 @@
     "project": ["./tsconfig.eslint.json"]
   },
 	"rules": {
+    "no-case-declarations": "off",
     "no-underscore-dangle": "off",
 		"no-const-assign": "warn",
 		"no-this-before-super": "warn",

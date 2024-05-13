@@ -13,7 +13,7 @@ export type NumberOrProcessNumberPackage = [
   /* endCharacter */ NumberOrProcessNumber,
 ];
 
-export type InlineCase = [
+export type InlineCase<T = null> = [
   /* transform source */ string,
   [
     /* transform result */ string | undefined,
@@ -21,10 +21,12 @@ export type InlineCase = [
     /* process line, default: last */ number?,
     /* debug default: false */ boolean?,
   ]?,
+  T?,
 ];
-export type Case = [
+export type Case<T = null> = [
   Record<number, string>,
   [string, NumberPackage],
   /* process line */ number,
   /* debug */ boolean,
+  T?,
 ];
