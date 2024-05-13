@@ -1,3 +1,5 @@
+import { Language } from '../../config/language';
+
 export class Position {
   line: number;
 
@@ -26,7 +28,7 @@ export interface LineAt {
   (p: Position): { text: number };
 }
 
-export const vscode = {
+export const vscode = (vscodeConfig?: Record<string, boolean>) => ({
   Range,
   Position,
   Selection,
@@ -36,10 +38,17 @@ export const vscode = {
   workspace: {
     getConfiguration() {
       return {
-        get() {
-          return true;
+        get(key) {
+          return vscodeConfig?.[key] ?? true;
         },
       };
     },
   },
-};
+  window: {
+    activeTextEditor: {
+      document: {
+        languageId: Language.javascript,
+      },
+    },
+  },
+});

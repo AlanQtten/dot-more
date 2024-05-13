@@ -20,6 +20,7 @@ const autoImport: AutoImport = (editor, edit, { importTarget, importFrom }) => {
   let importTargets = Array.isArray(importTarget)
     ? importTarget
     : [importTarget];
+
   const content = editor.document.getText();
   const importContent =
     sliceBy(content, 'import', `from '${importFrom}'`) ||

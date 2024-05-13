@@ -1,3 +1,4 @@
+/* v8 ignore next 999 */
 import vscode from 'vscode';
 
 export interface Handler<T = object> {

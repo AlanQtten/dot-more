@@ -1,3 +1,4 @@
+/* v8 ignore next 999 */
 export type NumberOrProcessNumber =
   | number
   | ((source: LineMap, target: string) => number);

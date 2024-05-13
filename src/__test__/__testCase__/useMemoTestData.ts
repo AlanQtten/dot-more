@@ -65,16 +65,9 @@ export default Object.keys(useMemoTestData).reduce<NamedCase>(
           {}
         );
 
-        const targetNumberPackage: NumberPackage = _targetNumberPackage.length
-          ? (_targetNumberPackage.map((n) =>
-              callable(n, lm, target)
-            ) as NumberPackage)
-          : [
-              0,
-              source[lastIndex].length - source[lastIndex].trimStart().length,
-              0,
-              source[lastIndex].length,
-            ];
+        const targetNumberPackage: NumberPackage = _targetNumberPackage.map(
+          (n) => callable(n, lm, target)
+        ) as NumberPackage;
 
         return [lm, [target, targetNumberPackage], processLine];
       }

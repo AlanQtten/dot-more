@@ -16,7 +16,7 @@ import functionComponentHandler from '../funcs/functionComponentHandler';
 import { Language } from '../config/language';
 
 vi.mock('vscode', () => {
-  return vscode;
+  return vscode();
 });
 
 const _tester = <
@@ -115,5 +115,36 @@ describe('test for .fc', () => {
         }
       );
     });
+  });
+});
+
+describe('extra test', () => {
+  test('extra test for coverage', () => {
+    expect(_tester(useStateHandler, 0, { 0: '' })).toEqual(['', [0, 0, 0, 0]]);
+    expect(_tester(useStateHandler, 0, { 0: 'a.b.useState' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(useMemoHandler, 0, { 0: '' })).toEqual(['', [0, 0, 0, 0]]);
+    expect(_tester(useMemoHandler, 0, { 0: 'a.b.useMemo' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(useContextHandler, 0, { 0: '' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(useContextHandler, 0, { 0: 'a.b.useContext' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(functionComponentHandler, 0, { 0: '' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
+    expect(_tester(functionComponentHandler, 0, { 0: 'a.b.fc' })).toEqual([
+      '',
+      [0, 0, 0, 0],
+    ]);
   });
 });
