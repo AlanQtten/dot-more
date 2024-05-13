@@ -56,10 +56,9 @@ export const matchFromContent = (
   if (currentRowText.length <= triggerMessageLength) {
     return;
   }
-  const currentRow = currentRowText.slice(
-    0,
-    currentRowText.length - triggerMessageLength
-  );
+
+  const dotIndex = currentRowText.slice(0, position.character).lastIndexOf('.');
+  const currentRow = currentRowText.slice(0, dotIndex);
   const trimCurrentRow = currentRow.trim();
 
   // 分析当前行是否成句
@@ -69,7 +68,7 @@ export const matchFromContent = (
         position.line,
         currentRow.length - currentRow.trimStart().length
       ),
-      sliceEnd: new vscode.Position(position.line, currentRowText.length),
+      sliceEnd: new vscode.Position(position.line, dotIndex + trigger.length),
       sliceContent: trimCurrentRow,
       isString: isStringStatement(trimCurrentRow),
     };
@@ -85,7 +84,7 @@ export const matchFromContent = (
           ticker,
           tickRow.length - tickRow.trimStart().length
         ),
-        sliceEnd: new vscode.Position(position.line, currentRowText.length),
+        sliceEnd: new vscode.Position(position.line, dotIndex + trigger.length),
         sliceContent: joinContent.trimStart(),
         isString: false,
       };

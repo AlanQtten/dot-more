@@ -64,6 +64,22 @@ describe('test for .log', () => {
       });
     });
   });
+
+  // extra test for .log
+  expect(_tester(logHandler, 0, { 0: 'a.b.c.log // apple' })).toStrictEqual([
+    'console.log(a.b.c)',
+    [0, 0, 0, 9],
+  ]);
+  expect(
+    _tester(logHandler, 2, {
+      0: 'list.map(item => ({',
+      1: '  ...item',
+      2: '})).log // apple',
+    })
+  ).toStrictEqual([
+    `console.log(list.map(item => ({\n  ...item\n})))`,
+    [0, 0, 2, 7],
+  ]);
 });
 
 describe('test for .logM', () => {

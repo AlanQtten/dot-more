@@ -50,7 +50,7 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
       item.command = {
         command,
         title: 'refactor',
-        arguments: [this.position.translate(0, label.length + 1), config],
+        arguments: [this.position, config],
       };
     }
 
