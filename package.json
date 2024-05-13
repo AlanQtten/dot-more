@@ -1,13 +1,19 @@
 {
   "name": "dot-more",
-  "displayName": "dot-more",
+  "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
   "version": "0.0.2",
   "publisher": "AlanQtten",
-  "icon": "icon.png",
+  "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.7.0"
   },
+  "keywords": [
+    "webstorm",
+    "log",
+    "console",
+    "autocomplete"
+  ],
   "categories": [
     "Other"
   ],
@@ -31,7 +37,7 @@
         "dotMore.disableReactExtends": {
           "type": "boolean",
           "default": false,
-          "description": "是否禁用react相关的行内扩展"
+          "description": "whether to disable react grammar extend"
         }
       }
     }

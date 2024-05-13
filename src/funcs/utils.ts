@@ -1,13 +1,20 @@
-export function isStringPrefixOrSuffix(character) {
-  return character.length === 1 && /'|"|`/.test(character);
+const stringSymbolTester = /'|"|`/;
+export function isStringStatement(statement) {
+  const _statement = statement.trim();
+
+  return stringSymbolTester.test(_statement[0]) && stringSymbolTester.test(_statement[_statement.length - 1]);
 }
 
-export const updateStartIndexWhileContainBlank = (content, start) => {
+const calcLength = (strArr: string[]) => {
+  return strArr.reduce((l, c) => l + c.length + 1, 0);
+};
+
+export const updateStartIndexWhileContainBlank = (content: string): number => {
   if(content.indexOf(' ') === -1) {
     return 0;
   }
-
-  return content.split('').findLastIndex((v: string) => v === ' ') + 1;
+  
+  return content.split('').findIndex(letter => letter !== ' ');
 };
 
 export const matchFromContent = (
@@ -19,14 +26,17 @@ export const matchFromContent = (
     return;
   }
   const l = content.length;
+  const logicSentences = content.slice(0, l - triggerMessageLength).split(';');
+  const analyzeSentence = logicSentences.pop();
+  const preLength = calcLength(logicSentences);
 
-  const lastCharacterIndex = content.length - 1 - triggerMessageLength;
-  const lastCharacter = content[lastCharacterIndex];
+  const lastCharacterIndex = analyzeSentence.length - 1;
+  const lastCharacter = analyzeSentence[lastCharacterIndex];
   
   let sliceStart = 0;
   let isString = false;
-  if(isStringPrefixOrSuffix(lastCharacter)) {
-    const _sliceStart = content
+  if(isStringStatement(analyzeSentence)) {
+    const _sliceStart = analyzeSentence
       .slice(0, lastCharacterIndex)
       .split('')
       .findLastIndex((v, index, arr) => {
@@ -35,30 +45,11 @@ export const matchFromContent = (
     
     _sliceStart !== -1 && (sliceStart = _sliceStart);
     isString = true;
-  }else if(lastCharacter === ')') {
-    const items = content.split('');
-    const l = items.length;
-    let leftBracket = 0;
-    let rightBracket = 0;
-    let _sliceStart = 0;
-    for(let i = l - 1 - triggerMessageLength; i >= 0; i--) {
-      if(items[i] === '(') {
-        leftBracket++;
-      }else if(items[i] === ')') {
-        rightBracket++;
-      }else {
-        continue;
-      }
-
-      if(leftBracket === rightBracket) {
-        _sliceStart = i;
-        break;
-      }    
-    }
-    sliceStart = updateStartIndexWhileContainBlank(content.slice(0, _sliceStart), _sliceStart);
   }else {
-    sliceStart = updateStartIndexWhileContainBlank(content, sliceStart);
+    sliceStart = updateStartIndexWhileContainBlank(analyzeSentence);
   }
+
+  sliceStart += preLength;
 
   return {
     sliceContent: content.slice(sliceStart, l - triggerMessageLength),

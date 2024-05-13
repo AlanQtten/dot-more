@@ -1,9 +1,12 @@
-# dot-more
+# Dot More
 
-## 自动补全
-通过.xxx的语法来快捷补全
+## example
+![example](assets/example.gif)
+
+## auto complete
+use .xxx to complete you sentence quickly, just like Webstorm
 ```js
-// ${c}表示光标位置
+// ${c} means keyboard cursor
 
 a.b.c.log    
 // console.log(a.b.c)
@@ -13,6 +16,9 @@ a.b.c.log
 
 arr.filter(item => Boolean(item)).log
 // console.log(arr.filter(item => Boolean(item)))
+
+typeof a + b / c + d && e === 'function'.log
+// console.log(typeof a + b / c + d && e === 'function')
 
 a.b.c.logM 
 // console.log(`a.b.c`, a.b.c)
@@ -24,10 +30,20 @@ a.b.c.if
  * }
  */
 
+a.b.c.typeof
+// typeof a.b.c
+
+typeof a + b / c + d && e === 'function'.if
+/**
+ * if(typeof a + b / c + d && e === 'function') {
+ *   ${c}
+ * }
+ */
+
 ```
-一些react语法
+some react extend grammar
 ```tsx
-// ${c}表示光标位置
+// ${c} means keyboard cursor
 
 apple.useState
 // const [apple, setApple] = useState(${c})
@@ -40,7 +56,7 @@ apple.useMemo
  */
 ```
 
-## 配置
-|配置|说明|默认值|
+## Config
+|config|description|default value|
 |---|---|---|
-|dotMore.disableReactExtends|是否禁用react扩展|false|
+|dotMore.disableReactExtends|whether to disable react grammar extend|false|

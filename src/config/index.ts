@@ -4,6 +4,7 @@ export enum Trigger {
   log = 'log',
   logM = 'logM',
   if = 'if',
+  typeof = 'typeof',
   useState = 'useState',
   useMemo = 'useMemo'
 }
@@ -20,6 +21,10 @@ const jsConfig = [
   {
     label: Trigger.if,
     description: "quick if statement",
+  },
+  {
+    label: Trigger.typeof,
+    description: "quick typeof statement",
   },
 ];
 

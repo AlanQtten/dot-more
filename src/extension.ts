@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import logHandler from './funcs/logHandler';
 import ifHandler from './funcs/ifHandler';
+import typeofHandler from './funcs/typeofHandler';
 import useStateHandler from './funcs/useStateHandler';
 import useMemoHandler from './funcs/useMemoHandler';
 import { Trigger, getConfigList } from './config';
@@ -26,6 +27,7 @@ class CompletionItemProvider implements vscode.CompletionItemProvider {
         item.label,
         vscode.CompletionItemKind.Operator
       );
+      snippetCompletion.sortText = item.sortText;
       snippetCompletion.documentation = new vscode.MarkdownString(
         item.description
       );
@@ -85,12 +87,17 @@ export function activate(context: vscode.ExtensionContext) {
       case Trigger.if:
         ifHandler(editor, edit, position);
         break;
+      case Trigger.typeof:
+        typeofHandler(editor, edit, position);
+        break;
       case Trigger.useState:
         useStateHandler(editor, edit, position);
         break;
       case Trigger.useMemo:
         useMemoHandler(editor, edit, position);
         break;
+      default:
+        throw new Error('error');
     }
 
     return Promise.resolve([]);
