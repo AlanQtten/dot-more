@@ -7,7 +7,7 @@
 a.b.c.log    
 // console.log(a.b.c)
 
-a.b.c.log_wm 
+a.b.c.logM 
 // console.log(`a.b.c`, a.b.c)
 
 a.b.c.if    
