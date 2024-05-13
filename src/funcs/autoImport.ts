@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { sliceBy } from './utils';
+import { sliceByEndOf } from './utils';
 
 interface AutoImport {
   (
@@ -16,17 +16,17 @@ const autoImport: AutoImport = (editor, edit, { importTarget, importFrom }) => {
   if (vscode.workspace.getConfiguration('dotMore').get('disableAutoImport')) {
     return;
   }
-
   let importTargets = Array.isArray(importTarget)
     ? importTarget
     : [importTarget];
 
   const content = editor.document.getText();
   const importContent =
-    sliceBy(content, 'import', `from '${importFrom}'`) ||
-    sliceBy(content, 'import', `from "${importFrom}"`);
+    sliceByEndOf(content, `from '${importFrom}'`, 'import') ||
+    sliceByEndOf(content, `from "${importFrom}"`, 'import');
+
   if (importContent) {
-    const alreadyImport = sliceBy(importContent, '{', '}')
+    const alreadyImport = sliceByEndOf(importContent, '}', '{')
       .slice(1, -1)
       .replaceAll('\n', '')
       .split(',')

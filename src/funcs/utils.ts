@@ -104,12 +104,13 @@ export const isTsDocument = (document?: vscode.TextDocument) => {
   return lId === Language.typescriptreact || lId === Language.typescript;
 };
 
-export const sliceBy = (content: string, start: string, end: string) => {
-  const sliceStart = content.indexOf(start);
-  const sliceEnd = content.indexOf(end);
-  if (sliceStart === -1 || sliceEnd === -1) {
+export const sliceByEndOf = (content: string, end: string, start: string) => {
+  const endPoint = content.indexOf(end);
+  if (endPoint === -1) {
     return '';
   }
 
-  return content.slice(sliceStart, sliceEnd + end.length);
+  const startPoint = content.slice(0, endPoint).lastIndexOf(start);
+
+  return content.slice(startPoint, endPoint + end.length);
 };
