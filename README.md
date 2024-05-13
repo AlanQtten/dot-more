@@ -1,7 +1,7 @@
 # Dot More
 
 ## example
-![example](assets/example.gif)
+![example](https://raw.githubusercontent.com/AlanQtten/dot-more/main/assets/example.gif)
 
 ## auto complete
 use .xxx to complete you sentence quickly, just like Webstorm
