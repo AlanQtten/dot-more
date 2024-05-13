@@ -5,30 +5,28 @@ import glob from 'glob';
 export function run(): Promise<void> {
   // Create the mocha test
   const mocha = new Mocha({
-    ui: 'tdd'
+    ui: 'tdd',
   });
 
   const testsRoot = path.resolve(__dirname, '..');
 
   return new Promise((c, e) => {
     glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
-      if(err) {
+      if (err) {
         return e(err);
       }
-
-      files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
-
+      files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
       try {
-        mocha.run(failures => {
-          if(failures > 0) {
+        mocha.run((failures) => {
+          if (failures > 0) {
             e(new Error(`${failures} test failed.`));
-          }else {
+          } else {
             c();
           }
         });
-      }catch(err) {
-        console.log(err);
-        e(err);
+      } catch (mochaError) {
+        console.log(mochaError);
+        e(mochaError);
       }
     });
   });

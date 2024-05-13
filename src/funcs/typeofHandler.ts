@@ -1,35 +1,27 @@
 import * as vscode from 'vscode';
 
-import type { Handler } from "./types";
-import { matchFromContent } from "./utils";
+import type { Handler } from './types';
+import { matchFromContent } from './utils';
 
-const typeofHandler: Handler = (
-  editor,
-  edit,
-  position
-) => {
+const typeofHandler: Handler = (editor, edit, position) => {
   const content = editor.document.lineAt(position).text;
 
-  const {
-    sliceContent,
-    sliceStart
-  } = matchFromContent(content, '.typeof');
+  const { sliceContent, sliceStart } =
+    matchFromContent(content, '.typeof') ?? {};
+
+  if (sliceStart === undefined) {
+    return;
+  }
 
   const replaceText = `typeof ${sliceContent}`;
 
   edit.replace(
     new vscode.Range(
       new vscode.Position(position.line, sliceStart),
-      new vscode.Position(position.line, content.length),
+      new vscode.Position(position.line, content.length)
     ),
     replaceText
   );
-
-  // const focus = new vscode.Position(position.line, sliceStart + replaceText.length - 2);
-
-  // setTimeout(() => {
-  //   editor.selection = new vscode.Selection(focus, focus);
-  // });
 };
 
 export default typeofHandler;
