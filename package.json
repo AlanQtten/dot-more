@@ -30,7 +30,7 @@
     "onLanguage:typescriptreact",
     "onLanguage:vue"
   ],
-  "main": "./out/extension.js",
+  "main": "./out/extension.cjs",
   "contributes": {
     "configuration": {
       "title": "dotMore",
@@ -73,5 +73,6 @@
     "typescript": "^5.1.3",
     "vite": "^5.0.10",
     "vitest": "^1.1.1"
-  }
+  },
+  "type": "module"
 }
