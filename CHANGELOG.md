@@ -62,3 +62,8 @@
 
 ### CHORE
 * adjust code with `.useContext`
+
+## [1.0.0] - 2024-01-04
+
+### REFACTOR
+* refactor project with `pnpm` & `vite` & `vitest`
