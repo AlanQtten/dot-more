@@ -49,3 +49,8 @@
 
 ### FIX
 * performance improve
+
+## [0.0.7] - 2023-11-13
+
+### FIX
+* fix repeat import issue

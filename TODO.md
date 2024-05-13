@@ -1,0 +1,2 @@
+- [ ] new logo
+- [ ] add test for `autoImport`

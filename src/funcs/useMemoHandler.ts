@@ -29,7 +29,7 @@ const useMemoHandler: Handler = (editor, edit, position) => {
     vscode.commands.executeCommand('cursorLineEnd');
   });
 
-  autoImport(edit, {
+  autoImport(editor, edit, {
     importTarget: 'useMemo',
     importFrom: 'react',
   });

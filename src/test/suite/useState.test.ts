@@ -23,6 +23,7 @@ const tester = () => {
           lineAt(p) {
             return { text: lineMap[typeof p === 'number' ? p : p.line] };
           },
+          getText: () => '',
         },
       },
       {

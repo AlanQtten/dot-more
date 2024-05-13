@@ -29,6 +29,9 @@ const tester = () => {
             return { text: lineMap[typeof p === 'number' ? p : p.line] };
           },
           languageId: extraOption.language,
+          getText() {
+            return '';
+          },
         },
       },
       {
