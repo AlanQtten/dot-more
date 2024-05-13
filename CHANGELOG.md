@@ -1,45 +1,42 @@
 # CHANGELOG
-## [0.0.1] - 2023-07-05
-### Features
-* add feature `.log`
-* add feature `.if`
-* add feature `.logM`
-* add feature `.for`
-* init LICENSE & README
 
-## [0.0.2] - 2023-07-11
-### FEATURE
-* add react extends
-* add config `dotMore.disableReactExtends`
-* add feature `.useState`
-* add feature `.useMemo`
-* refactor `.log`,`.logM`,`.if` and support more syntax
-* add auto test script
-### REMOVED
-* remove `.for`
+## 1.0.1 
 
-## [0.0.3] - 2023-07-17
-
-### FEATURE
-* add feature `.typeof`
-* add support for more syntax
-  * such as sentence with operator or typeof etc
-* change README language to english
-
-## [0.0.4] - 2023-08-16
-
-### REMOVE
-* remove support for one line with multiple sentence
-
-### FEATURE
-* add support for multiple line with one sentence
-
-## [0.0.5] - 2023-08-17
+`2024-01-09`
 
 ### FIX
-* performance improve
+* fix some issue with `autoImport`
 
-## [0.0.6] - 2023-11-07
+### TEST
+* add test case for `.useEffect`
+
+## 1.0.0
+
+`2024-01-04`
+
+### REFACTOR
+* refactor project with `pnpm` & `vite` & `vitest`
+
+## 0.0.8
+
+`2023-11-30`
+
+### FEATURE
+* add feature `.useEffect`
+
+### CHORE
+* adjust code with `.useContext`
+
+## 0.0.7
+
+`2023-11-13`
+
+### FIX
+* fix repeat import issue
+
+## 0.0.6
+
+`2023-11-07`
 
 ### FEATURE
 * add auto import for some api(useState, useMemo etc)
@@ -50,28 +47,55 @@
 ### FIX
 * performance improve
 
-## [0.0.7] - 2023-11-13
+## 0.0.5
+
+`2023-08-17`
 
 ### FIX
-* fix repeat import issue
+* performance improve
 
-## [0.0.8] - 2023-11-30
+## 0.0.4
+
+`2023-08-16`
+
+### REMOVE
+* remove support for one line with multiple sentence
 
 ### FEATURE
-* add feature `.useEffect`
+* add support for multiple line with one sentence
 
-### CHORE
-* adjust code with `.useContext`
+## 0.0.3
 
-## [1.0.0] - 2024-01-04
+`2023-07-17`
 
-### REFACTOR
-* refactor project with `pnpm` & `vite` & `vitest`
+### FEATURE
+* add feature `.typeof`
+* add support for more syntax
+  * such as sentence with operator or typeof etc
+* change README language to english
 
-## [1.0.1] - 2024-01-09
+## 0.0.2
 
-### FIX
-* fix some issue with `autoImport`
+`2023-07-11`
 
-### TEST
-* add test case for `.useEffect`
+### FEATURE
+* add react extends
+* add config `dotMore.disableReactExtends`
+* add feature `.useState`
+* add feature `.useMemo`
+* refactor `.log`,`.logM`,`.if` and support more syntax
+* add auto test script
+
+### REMOVED
+* remove `.for`
+
+## 0.0.1
+
+`2023-07-05`
+
+### FEATURE
+* add feature `.log`
+* add feature `.if`
+* add feature `.logM`
+* add feature `.for`
+* init LICENSE & README
