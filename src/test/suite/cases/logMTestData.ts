@@ -152,11 +152,11 @@ const dotLogMTestData: InlineCase[] = [
   ],
   // test for multi line content
   [
-    `{a:1,b:2,c:3
+    `{a:1,b:2,c:3,
 d:4}`,
     [
-      `console.log(\`{a:1,b:2,c:3
-d:4}\`, {a:1,b:2,c:3
+      `console.log(\`{a:1,b:2,c:3,
+d:4}\`, {a:1,b:2,c:3,
 d:4})`,
       [
         0,
@@ -170,11 +170,11 @@ d:4})`,
     ],
   ],
   [
-    `{a:1,b:2,c:3
+    `{a:1,b:2,c:3,
 e: [1,2,3, { test: 'ccc' }],
 d:4}`,
     [
-      "console.log(`{a:1,b:2,c:3\ne: [1,2,3, { test: 'ccc' }],\nd:4}`, {a:1,b:2,c:3\ne: [1,2,3, { test: 'ccc' }],\nd:4})",
+      "console.log(`{a:1,b:2,c:3,\ne: [1,2,3, { test: 'ccc' }],\nd:4}`, {a:1,b:2,c:3,\ne: [1,2,3, { test: 'ccc' }],\nd:4})",
       [
         0,
         0,
@@ -262,6 +262,98 @@ function f() {
         },
       ],
       26,
+    ],
+  ],
+  [
+    `console.log('some other code')
+console.log('some other code');
+const a = b + c / d
+
+someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9),
+    bbb: bbb.bbbb.bbbbb
+  };
+})`,
+    [
+      `console.log(\`someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9),
+    bbb: bbb.bbbb.bbbbb
+  };
+})\`, someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9),
+    bbb: bbb.bbbb.bbbbb
+  };
+}))`,
+      [
+        4,
+        0,
+        13,
+        (s) => {
+          return s[13].length;
+        },
+      ],
+      13,
+    ],
+  ],
+  [
+    `console.log('some other code')
+console.log('some other code');
+const a = b + c / d
+
+someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9) / /test[^ ]/,
+    bbb: bbb.bbbb.bbbbb
+  };
+})`,
+    [
+      `console.log(\`someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9) / /test[^ ]/,
+    bbb: bbb.bbbb.bbbbb
+  };
+})\`, someArr.map((item, i) => {
+  return {
+    a: a.aa.aaa,
+    aa: aa.aaa.aaaa,
+    aaa: aaa.aaaa.aaaaa,
+    b: b.bb.bbb,
+    bb: -1 / 2 + i * (1 / 9) / /test[^ ]/,
+    bbb: bbb.bbbb.bbbbb
+  };
+}))`,
+      [
+        4,
+        0,
+        13,
+        (s) => {
+          return s[13].length;
+        },
+      ],
+      13,
     ],
   ],
 ];

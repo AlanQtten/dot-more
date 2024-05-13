@@ -29,10 +29,10 @@ const dotTypeofTestData: InlineCase[] = [
   [`  a + b === c / d && (e - f)`],
   // test for multi line content
   [
-    `{a:1,b:2,c:3
+    `{a:1,b:2,c:3,
 d:4}`,
     [
-      `typeof {a:1,b:2,c:3\nd:4}`,
+      `typeof {a:1,b:2,c:3,\nd:4}`,
       [
         0,
         0,
@@ -45,11 +45,11 @@ d:4}`,
     ],
   ],
   [
-    `{a:1,b:2,c:3
+    `{a:1,b:2,c:3,
 e: [1,2,3, { test: 'ccc' }],
 d:4}`,
     [
-      "typeof {a:1,b:2,c:3\ne: [1,2,3, { test: 'ccc' }],\nd:4}",
+      "typeof {a:1,b:2,c:3,\ne: [1,2,3, { test: 'ccc' }],\nd:4}",
       [
         0,
         0,
