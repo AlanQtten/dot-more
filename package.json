@@ -44,6 +44,17 @@
           "type": "boolean",
           "default": true,
           "description": "whether to disable auto import api, such as `useState`"
+        },
+        "dotMore.maxLengthOfLogmPrefixMessage": {
+          "type": "number",
+          "required": false,
+          "default": 18,
+          "description": "max length of logm prefix message, default is infinity"
+        },
+        "dotMore.alwaysCloneLogResult": {
+          "type": "boolean",
+          "default": false,
+          "description": "whether to use `structuredClone` for log result"
         }
       }
     }

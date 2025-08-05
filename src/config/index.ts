@@ -1,5 +1,5 @@
 /* v8 ignore next 999 */
-import * as vscode from 'vscode';
+import { get } from './vscodeConfig';
 
 export enum Trigger {
   log = 'log',
@@ -61,10 +61,5 @@ const reactConfig: Config[] = [
 ];
 
 export function getConfigList() {
-  return [
-    ...jsConfig,
-    ...(vscode.workspace.getConfiguration('dotMore').get('disableReactExtends')
-      ? []
-      : reactConfig),
-  ];
+  return [...jsConfig, ...(get('disableReactExtends') ? [] : reactConfig)];
 }

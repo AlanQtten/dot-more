@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import type { Handler } from './types';
 import { matchFromContent } from './utils';
+import { get } from '../config/vscodeConfig';
 
 export type LogHandlerOptions = {
   withMessage: boolean;
@@ -24,6 +25,8 @@ const logHandler: Handler<LogHandlerOptions> = (
     return;
   }
 
+  const maxLengthOfWithMessage = get('maxLengthOfLogmPrefixMessage');
+  const cloneLogResult = get('alwaysCloneLogResult');
   let replaceText = '';
 
   const mergedWithMessage = withMessage && !isString;
@@ -31,15 +34,24 @@ const logHandler: Handler<LogHandlerOptions> = (
     sliceContent.startsWith('(') && sliceContent.endsWith(')')
   );
 
+  const wrapWithClone = cloneLogResult
+    ? (str: string) => `structuredClone(${str})`
+    : (str: string) => str;
+
   if (mergedWithMessage) {
-    replaceText = `console.log(\`${sliceContent.replaceAll(
-      '`',
-      '\\`'
-    )}\`, ${sliceContent})`;
+    let message = `${
+      cloneLogResult ? `[[cloned]]::` : ''
+    }${sliceContent.replaceAll('`', '\\`')}`;
+
+    if (message.length > maxLengthOfWithMessage) {
+      message = `${message.slice(0, maxLengthOfWithMessage)}...`;
+    }
+
+    replaceText = `console.log(\`${message}\`, ${wrapWithClone(sliceContent)})`;
   } else {
-    replaceText = `console.log${needBracket ? '(' : ''}${sliceContent}${
-      needBracket ? ')' : ''
-    }`;
+    replaceText = `console.log${needBracket ? '(' : ''}${wrapWithClone(
+      sliceContent
+    )}${needBracket ? ')' : ''}`;
   }
 
   edit.replace(new vscode.Range(sliceStart, sliceEnd), replaceText);

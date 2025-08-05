@@ -1,4 +1,5 @@
 import { Language } from '../../config/language';
+import { type VscodeConfig } from '../../config/vscodeConfig';
 
 export class Position {
   line: number;
@@ -28,7 +29,7 @@ export interface LineAt {
   (p: Position): { text: number };
 }
 
-export const vscode = (vscodeConfig?: Record<string, boolean>) => ({
+export const vscode = (vscodeConfig?: VscodeConfig | (() => VscodeConfig)) => ({
   Range,
   Position,
   Selection,
@@ -38,8 +39,11 @@ export const vscode = (vscodeConfig?: Record<string, boolean>) => ({
   workspace: {
     getConfiguration() {
       return {
-        get(key) {
-          return vscodeConfig?.[key] ?? true;
+        get(key, defaultValue) {
+          const rawConfig =
+            typeof vscodeConfig === 'function' ? vscodeConfig() : vscodeConfig;
+
+          return rawConfig?.[key] ?? defaultValue;
         },
       };
     },

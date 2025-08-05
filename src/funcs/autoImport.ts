@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { sliceByEndOf } from './utils';
+import { get } from '../config/vscodeConfig';
 
 interface AutoImport {
   (
@@ -13,7 +14,7 @@ interface AutoImport {
 }
 
 const autoImport: AutoImport = (editor, edit, { importTarget, importFrom }) => {
-  if (vscode.workspace.getConfiguration('dotMore').get('disableAutoImport')) {
+  if (get('disableAutoImport')) {
     return;
   }
   let importTargets = Array.isArray(importTarget)
