@@ -1,10 +1,13 @@
 # Dot More
 
 ## example
+
 ![example](https://raw.githubusercontent.com/AlanQtten/dot-more/main/assets/example.gif)
 
 ## auto complete
+
 use .xxx to complete you sentence quickly, just like Webstorm
+
 ```js
 // ${c} means keyboard cursor
 
@@ -60,7 +63,9 @@ typeof a + b / c + d && e === 'function'.if
  */
 
 ```
+
 some react extend grammar
+
 ```tsx
 // ${c} means keyboard cursor
 
@@ -82,7 +87,10 @@ apple.fc
 ```
 
 ## Config
+
 |config|description|default value|
 |---|---|---|
 |dotMore.disableReactExtends|whether to disable react grammar extend|false|
 |dotMore.disableAutoImport|whether to disable auto import api, such as `useState`|true|
+|dotMore.maxLengthOfLogmPrefixMessage|max length of logm prefix message|-|
+|dotMore.alwaysCloneLogResult|whether to use `structuredClone` for log result|false|
