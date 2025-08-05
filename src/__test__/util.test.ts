@@ -7,9 +7,13 @@ import {
   isTsDocument,
 } from '../funcs/utils';
 import autoImport from '../funcs/autoImport';
+import { defaultValuesOfVscodeConfig } from '../config/vscodeConfig';
 
 vi.mock('vscode', () => {
-  return vscode({ disableAutoImport: false });
+  return vscode(() => ({
+    ...defaultValuesOfVscodeConfig,
+    disableAutoImport: false,
+  }));
 });
 
 describe('util test', () => {

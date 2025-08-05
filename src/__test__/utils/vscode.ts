@@ -39,11 +39,11 @@ export const vscode = (vscodeConfig?: VscodeConfig | (() => VscodeConfig)) => ({
   workspace: {
     getConfiguration() {
       return {
-        get(key, defaultValue) {
+        get(key) {
           const rawConfig =
             typeof vscodeConfig === 'function' ? vscodeConfig() : vscodeConfig;
 
-          return rawConfig?.[key] ?? defaultValue;
+          return rawConfig?.[key];
         },
       };
     },

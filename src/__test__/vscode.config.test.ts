@@ -15,8 +15,19 @@ describe('test for vscode config', () => {
       ([key, value]: [string, { type: string; default: unknown }]) => {
         const realKey = key.slice('dotMore.'.length);
 
-        expect(typeof defaultValuesOfVscodeConfig[realKey]).toEqual(value.type);
-        expect(defaultValuesOfVscodeConfig[realKey]).toEqual(value.default);
+        const { type } = value;
+        let defaultValue = value.default;
+
+        if (!defaultValue) {
+          defaultValue =
+            {
+              number: Number.MAX_SAFE_INTEGER,
+              boolean: false,
+            }[type] ?? defaultValue;
+        }
+
+        expect(typeof defaultValuesOfVscodeConfig[realKey]).toEqual(type);
+        expect(defaultValuesOfVscodeConfig[realKey]).toEqual(defaultValue);
       }
     );
   });

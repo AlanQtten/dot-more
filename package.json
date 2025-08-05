@@ -47,13 +47,10 @@
         },
         "dotMore.maxLengthOfLogmPrefixMessage": {
           "type": "number",
-          "required": false,
-          "default": 18,
-          "description": "max length of logm prefix message, default is infinity"
+          "description": "max length of logm prefix message"
         },
         "dotMore.alwaysCloneLogResult": {
           "type": "boolean",
-          "default": false,
           "description": "whether to use `structuredClone` for log result"
         }
       }

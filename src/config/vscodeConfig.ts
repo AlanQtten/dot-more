@@ -10,12 +10,19 @@ export interface VscodeConfig {
 export const defaultValuesOfVscodeConfig: VscodeConfig = {
   disableReactExtends: false,
   disableAutoImport: true,
-  maxLengthOfLogmPrefixMessage: 18,
+  maxLengthOfLogmPrefixMessage: Number.MAX_SAFE_INTEGER,
   alwaysCloneLogResult: false,
 };
 
 export const get = <T extends keyof VscodeConfig>(key: T): VscodeConfig[T] => {
-  return vscode.workspace
+  const defaultValue = defaultValuesOfVscodeConfig[key];
+  const settledValue = vscode.workspace
     .getConfiguration('dotMore')
-    .get(key, defaultValuesOfVscodeConfig[key]);
+    .get(key) as VscodeConfig[T];
+
+  if (typeof settledValue === 'boolean') {
+    return settledValue;
+  }
+
+  return settledValue || /* for number */ defaultValue;
 };
