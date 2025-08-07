@@ -2,7 +2,7 @@
   "name": "dot-more",
   "displayName": "Dot More",
   "description": "vscode plugin,easy to generate code",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "AlanQtten",
   "icon": "assets/icon.png",
   "engines": {
@@ -49,10 +49,10 @@
           "type": "number",
           "description": "max length of logm prefix message"
         },
-        "dotMore.alwaysCloneLogResult": {
-          "type": "boolean",
-          "default": false,
-          "description": "whether to use `structuredClone` for log result"
+        "dotMore.clonePrefixStyle": {
+          "type": "string",
+          "default": "background:#FF8040;color:white",
+          "description": "customize clone prefix style for console"
         }
       }
     }

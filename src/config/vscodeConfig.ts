@@ -4,14 +4,14 @@ export interface VscodeConfig {
   disableReactExtends?: boolean;
   disableAutoImport?: boolean;
   maxLengthOfLogmPrefixMessage?: number;
-  alwaysCloneLogResult?: boolean;
+  clonePrefixStyle?: string;
 }
 
 export const defaultValuesOfVscodeConfig: VscodeConfig = {
   disableReactExtends: false,
   disableAutoImport: true,
   maxLengthOfLogmPrefixMessage: Number.MAX_SAFE_INTEGER,
-  alwaysCloneLogResult: false,
+  clonePrefixStyle: 'background:#FF8040;color:white',
 };
 
 export const get = <T extends keyof VscodeConfig>(key: T): VscodeConfig[T] => {

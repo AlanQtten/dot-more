@@ -89,6 +89,9 @@ export function activate(context: vscode.ExtensionContext) {
       case Trigger.logM:
         logHandler(editor, edit, position, { withMessage: true });
         break;
+      case Trigger.logClone:
+        logHandler(editor, edit, position, { withMessage: true, clone: true });
+        break;
       case Trigger.if:
         ifHandler(editor, edit, position);
         break;
@@ -111,6 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
         functionComponentHandler(editor, edit, position);
         break;
       default:
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
         const e: never = config.label;
     }
 

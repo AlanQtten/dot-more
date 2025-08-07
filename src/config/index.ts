@@ -4,6 +4,7 @@ import { get } from './vscodeConfig';
 export enum Trigger {
   log = 'log',
   logM = 'logM',
+  logClone = 'logClone',
   if = 'if',
   typeof = 'typeof',
   useState = 'useState',
@@ -26,6 +27,10 @@ const jsConfig: Config[] = [
   {
     label: Trigger.logM,
     description: 'quick console.log result with pre message',
+  },
+  {
+    label: Trigger.logClone,
+    description: 'quick console.log result with pre message and clone result',
   },
   {
     label: Trigger.if,

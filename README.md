@@ -93,4 +93,4 @@ apple.fc
 |dotMore.disableReactExtends|whether to disable react grammar extend|false|
 |dotMore.disableAutoImport|whether to disable auto import api, such as `useState`|true|
 |dotMore.maxLengthOfLogmPrefixMessage|max length of logm prefix message|-|
-|dotMore.alwaysCloneLogResult|whether to use `structuredClone` for log result|false|
+|dotMore.clonePrefixStyle|customize clone prefix style for console|"background:#FF8040;color:white"|

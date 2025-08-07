@@ -10,6 +10,7 @@ import typeofHandler from '../funcs/typeofHandler';
 import ifHandler from '../funcs/ifHandler';
 import {
   defaultValuesOfVscodeConfig,
+  get,
   VscodeConfig,
 } from '../config/vscodeConfig';
 
@@ -95,15 +96,6 @@ describe('test for .log', () => {
       [0, 0, 2, 7],
     ]);
   });
-
-  it('should work fine with alwaysCloneLogResult = true', () => {
-    currentConfig.alwaysCloneLogResult = true;
-
-    expect(_tester(logHandler, 0, { 0: 'a.b.c.log' })).toStrictEqual([
-      'console.log(structuredClone(a.b.c))',
-      [0, 0, 0, 9],
-    ]);
-  });
 });
 
 describe('test for .logM', () => {
@@ -117,14 +109,19 @@ describe('test for .logM', () => {
     });
   });
 
-  it('should work fine with alwaysCloneLogResult = true', () => {
-    currentConfig.alwaysCloneLogResult = true;
-
+  it('should work fine with .logClone', () => {
     expect(
-      _tester(logHandler, 0, { 0: 'a.b.c.log' }, { withMessage: true })
+      _tester(
+        logHandler,
+        0,
+        { 0: 'a.b.c.logClone' },
+        { withMessage: true, clone: true }
+      )
     ).toStrictEqual([
-      'console.log(`[[cloned]]::a.b.c`, structuredClone(a.b.c))',
-      [0, 0, 0, 10],
+      `console.log('%c C ', '${get(
+        'clonePrefixStyle'
+      )}', \`a.b.c\`, structuredClone(a.b.c))`,
+      [0, 0, 0, 14],
     ]);
   });
 
