@@ -61,7 +61,7 @@
     "vscode:prepublish": "vitest --run",
     "compile": "vite build --mode production",
     "debug": "vite build --watch",
-    "test": "vitest --coverage --bail 1",
+    "test": "vitest --coverage.enabled=true --coverage.skipFull=true --bail 1",
     "build": "pnpm compile && vsce package --no-dependencies"
   },
   "devDependencies": {
