@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.0.0
+
+- 🌟 a brand new logo(build by chatgpt)
+- 🐛 refactor content matching to support ts code
+
 ## 1.2.0
 
 - 💥 remove `alwaysCloneLogResult` and provide a separate command to log with clone
