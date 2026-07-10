@@ -24,6 +24,10 @@ export default mergeConfig(
     },
     test: {
       include: ['src/__test__/**/*.test.ts'],
+      coverage: {
+        include: ['src/**/*.ts'],
+        exclude: ['src/__test__/**'],
+      },
     },
   })
 );

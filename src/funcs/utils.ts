@@ -1,8 +1,8 @@
+import { parseExpression, type ParserPlugin } from '@babel/parser';
 import * as vscode from 'vscode';
 import { Language } from '../config/language';
 
 const stringSymbolTester = /'|"|`/;
-const es6SyntaxTester = /import/g;
 export function isStringStatement(statement: string) {
   return (
     stringSymbolTester.test(statement[0]) &&
@@ -18,23 +18,30 @@ export const updateStartIndexWhileContainBlank = (content: string): number => {
   return content.split('').findIndex((letter) => letter !== ' ');
 };
 
-const presetSentence = (sentence: string) => {
-  if (es6SyntaxTester.test(sentence)) {
-    return sentence.replaceAll(
-      es6SyntaxTester,
-      '____globalThis____' // just a wired name to avoid duplicate variable issue
-    );
+export const isSentence = (sentence: string, languageId: string): boolean => {
+  const plugins: ParserPlugin[] = [];
+  const isTypeScript =
+    languageId === Language.typescript ||
+    languageId === Language.typescriptreact;
+  const isReact =
+    languageId === Language.javascriptreact ||
+    languageId === Language.typescriptreact;
+
+  if (isTypeScript) {
+    plugins.push('typescript');
   }
 
-  return sentence;
-};
+  if (isReact) {
+    plugins.push('jsx');
+  }
 
-const isSentence = (sentence: string): boolean => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    new Function(`const a = ${presetSentence(sentence)}`);
+    parseExpression(sentence, {
+      sourceType: 'module',
+      plugins,
+    });
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -45,11 +52,11 @@ export const matchFromContent = (
   trigger: string
 ):
   | {
-      sliceStart: vscode.Position;
-      sliceEnd: vscode.Position;
-      sliceContent: string;
-      isString: boolean;
-    }
+    sliceStart: vscode.Position;
+    sliceEnd: vscode.Position;
+    sliceContent: string;
+    isString: boolean;
+  }
   | undefined => {
   const triggerMessageLength = trigger.length;
   const currentRowText = document.lineAt(position).text;
@@ -62,7 +69,7 @@ export const matchFromContent = (
   const trimCurrentRow = currentRow.trim();
 
   // 分析当前行是否成句
-  if (isSentence(trimCurrentRow)) {
+  if (isSentence(trimCurrentRow, document.languageId)) {
     return {
       sliceStart: new vscode.Position(
         position.line,
@@ -78,7 +85,7 @@ export const matchFromContent = (
 
   while (ticker >= 0) {
     const tickRow = document.lineAt(ticker).text;
-    if (isSentence(joinContent)) {
+    if (isSentence(joinContent, document.languageId)) {
       return {
         sliceStart: new vscode.Position(
           ticker,
